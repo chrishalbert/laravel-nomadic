@@ -28,7 +28,7 @@ class NomadicServiceProvider extends MigrationServiceProvider
         $this->app->singleton('migration.repository', function ($app) {
             $table = $app['config']['database.migrations'];
 
-            return new DatabaseNomadizationRepository($app['db'], $table);
+            return new DatabaseNomadicRepository($app['db'], $table);
         });
     }
 
@@ -45,7 +45,7 @@ class NomadicServiceProvider extends MigrationServiceProvider
         $this->app->singleton('migrator', function ($app) {
             $repository = $app['migration.repository'];
 
-            return new Nomad($repository, $app['db'], $app['files']);
+            return new NomadicMigrator($repository, $app['db'], $app['files']);
         });
     }
 }
