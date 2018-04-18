@@ -12,8 +12,8 @@
   ],
   "require": {
     "php": "5.* || 7.*",
-    "illuminate/database": "5.4.*",
-    "illuminate/filesystem": "5.4.*"
+    "illuminate/database": "5.*",
+    "illuminate/filesystem": "5.*"
   },
   "require-dev": {
     "phing/phing": "2.*",
