@@ -1,0 +1,25 @@
+<?php
+
+use ChrisHalbert\LaravelNomadic\NomadicMigration;
+
+class DummyClass extends NomadicMigration
+{
+    /**
+     * @return void
+     */
+    public function up()
+    {
+        // Use $this->setProperty($migrationColumn, $insertedIds);
+        // The $migrationColumn MUST be added to the configs/nomadic.php
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        // And now you can $insertedIds = $this->getProperty($migrationColumn) and delete
+    }
+}
