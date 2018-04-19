@@ -8,10 +8,17 @@ class DatabaseNomadicRepository extends DatabaseMigrationRepository implements N
 {
     public function log($file, $batch, $params = [])
     {
+        $schema = config('nomadic.schema');
         unset($params['migrations']);
         unset($params['batch']);
 
-        $record = ['migration' => $file, 'batch' => $batch];
+        // Only allow schema defined columns to be used in migrations
+        $params = array_filter($params, function($i) use ($schema) {
+            return in_array($i, $schema);
+        }, ARRAY_FILTER_USE_KEY);
+
+
+        $record = array('migration' => $file, 'batch' => $batch);
         $record = array_merge($record, $params);
 
         $this->table()->insert($record);
