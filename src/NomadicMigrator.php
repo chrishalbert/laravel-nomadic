@@ -3,8 +3,6 @@ namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Database\Migrations\Migrator;
 use ChrisHalbert\LaravelNomadic\NomadicRepositoryInterface;
-
-
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 

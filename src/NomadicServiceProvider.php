@@ -14,7 +14,7 @@ class NomadicServiceProvider extends MigrationServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/nomad.php' => config_path('nomad.php'),
+            __DIR__.'/nomadic.php' => config_path('nomadic.php'),
         ]);
     }
 
@@ -48,4 +48,17 @@ class NomadicServiceProvider extends MigrationServiceProvider
             return new NomadicMigrator($repository, $app['db'], $app['files']);
         });
     }
+
+    /**
+     * Register the migration creator.
+     *
+     * @return void
+     */
+    protected function registerCreator()
+    {
+        $this->app->singleton('migration.creator', function ($app) {
+            return new NomadicMigrationCreator($app['files']);
+        });
+    }
+
 }
