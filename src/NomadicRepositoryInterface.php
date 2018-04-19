@@ -14,5 +14,5 @@ interface NomadicRepositoryInterface extends MigrationRepositoryInterface
      * @param  array   $params
      * @return void
      */
-    public function log($file, $batch, $params = []);
+    public function log($file, $batch, $params = array());
 }
