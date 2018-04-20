@@ -57,10 +57,17 @@ class NomadicMigrator extends Migrator
 
         $this->runMigration($migration, 'up');
 
+        // For backwards compatability, files not created with Nomadic will still run normally
+        $properties = array();
+        if (method_exists($migration, 'getProperties')) {
+            $properties = array_merge($properties, $migration->getProperties());
+        }
+
+
         // Once we have run a migrations class, we will log that it was run in this
         // repository so that we don't try to run it next time we do a migration
         // in the application. A migration repository keeps the migrate order.
-        $this->repository->log($name, $batch, $migration->getProperties());
+        $this->repository->log($name, $batch, $properties);
 
         $this->note("<info>Migrated:</info>  {$name}");
     }
