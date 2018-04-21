@@ -18,4 +18,11 @@ interface NomadicRepositoryInterface extends MigrationRepositoryInterface
      * @return void
      */
     public function log($file, $batch, $params = array());
+
+    /**
+     * Get all the properties.
+     * @param string $migrationFileName The filename
+     * @return array
+     */
+    public function getProperties($migrationFileName);
 }

@@ -51,7 +51,7 @@ abstract class NomadicMigration extends Migration
     }
 
     /**
-     * Syncs up w/ the databsae and returns the property.
+     * Syncs up w/ the database and returns the property.
      * @param string $key The column name of the migration.
      * @return mixed
      */
@@ -67,6 +67,7 @@ abstract class NomadicMigration extends Migration
      */
     public function getProperties()
     {
+        $this->syncWithDb();
         return $this->properties;
     }
 
