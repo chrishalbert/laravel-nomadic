@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="laravel-nomadic" default="build" basedir=".">
+    <target name="build" depends="prepare,phpcs,phpunit,assert"/>
+    <autoloader autoloaderpath="${project.basedir}/vendor/autoload.php"/>
+    <property name="reports.dir" value="${project.basedir}/reports" override="true" />
+
+    <!-- Prepare the build by cleaning up the artifacts. -->
+    <target name="prepare" description="Cleanup build artifacts">
+        <delete dir="${reports.dir}"/>
+        <mkdir dir="${reports.dir}"/>
+    </target>
+
+    <!-- Detect coding standard violations and print to screen if error occurs. -->
+    <target name="phpcs" description="Detect coding standard violations">
+        <phpcodesniffer standard="./vendor/chadicus/coding-standard/Chadicus" haltonerror="true" file="src">
+            <formatter type="checkstyle" outfile="${reports.dir}/phpcs.log"/>
+            <formatter type="full" usefile="false"/>
+        </phpcodesniffer>
+    </target>
+
+    <!-- Run phpunit with code coverage and generate reports -->
+    <target name="phpunit" description="Run phpunit tests">
+        <!-- Specify coverage and path to save coverage stats -->
+        <coverage-setup database="${reports.dir}/coverage.db">
+            <fileset dir="src">
+                <include name="**/*.php"/>
+            </fileset>
+        </coverage-setup>
+
+        <!-- Run phpunit saving data -->
+        <phpunit printsummary="true" codecoverage="true" errorproperty="phpuniterror" failureproperty="phpunitfailure">
+            <formatter type="xml" todir="${reports.dir}" outfile="phpunit.log"/>
+            <formatter type="clover" todir="${reports.dir}"/>
+            <batchtest>
+                <fileset dir="${project.basedir}/tests">
+                    <include name="**/*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+
+        <!-- Generate the reports using phing -->
+        <phpunitreport infile="${project.basedir}/phpunit.xml" format="frames" todir="${reports.dir}"/>
+        <coverage-report outfile="${reports.dir}/coverage.xml">
+            <report toDir="${reports.dir}"/>
+        </coverage-report>
+    </target>
+
+    <!-- Make sure tests didnt fail and code coverage standards are met -->
+    <target name="assert" description="Assert project standards met.">
+        <!-- Verify that phpunit error or fail -->
+        <exec command="cat ${reports.dir}/phpunit.log" outputProperty="phpunitoutput"/>
+        <if>
+            <or>
+                <equals arg1="${phpuniterror}" arg2="true"/>
+                <equals arg1="${phpunitfailure}" arg2="true"/>
+            </or>
+            <then>
+                <fail msg="!${line.separator}${line.separator}${phpunitoutput}" />
+
+            </then>
+        </if>
+
+        <!-- Verify 100% Code Coverage -->
+        <xmlproperty file="${reports.dir}/coverage.xml" collapseAttributes="true"/>
+        <if>
+            <equals arg1="${snapshot.totalcount}/${snapshot.totalcovered}*100" arg2="90"/>
+            <then>
+                <fail msg="!${line.separator}${line.separator}Code Coverage needs to be increased 90% still:  file://${reports.dir}/index.html" />
+            </then>
+        </if>
+    </target>
+</project>

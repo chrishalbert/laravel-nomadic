@@ -1,0 +1,27 @@
+<phpunit backupGlobals="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         stopOnRisky="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+    <php>
+        <ini name="error_reporting" value="-1" />
+    </php>
+
+    <testsuites>
+        <testsuite name="PhpBCC Test Suite">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <whitelist processUncoveredFilesFromWhitelist="true">
+        <directory suffix=".php">src</directory>
+    </whitelist>
+
+</phpunit>
