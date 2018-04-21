@@ -3,8 +3,10 @@ namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Database\Migrations\Migrator;
 use ChrisHalbert\LaravelNomadic\NomadicRepositoryInterface;
+use ChrisHalbert\LaravelNomadic\NomadicMigration;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
+use Illuminate\Support\Str;
 
 class NomadicMigrator extends Migrator
 {
@@ -70,5 +72,26 @@ class NomadicMigrator extends Migrator
         $this->repository->log($name, $batch, $properties);
 
         $this->note("<info>Migrated:</info>  {$name}");
+    }
+
+    /**
+     * Resolve a migration instance from a file.
+     *
+     * @param  string  $file
+     * @return object
+     */
+    public function resolve($file)
+    {
+        $migration = null;
+        $class = Str::studly(implode('_', array_slice(explode('_', $file), 4)));
+
+        // For backwards compatability
+        if (is_subclass_of($class, NomadicMigration::class)) {
+            $migration = new $class(app('migration.repository'));
+        } else {
+            $migration = new $class;
+        }
+
+        return $migration;
     }
 }

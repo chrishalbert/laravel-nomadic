@@ -23,4 +23,9 @@ class DatabaseNomadicRepository extends DatabaseMigrationRepository implements N
 
         $this->table()->insert($record);
     }
+
+    public function getProperties($migrationFileName)
+    {
+        return get_object_vars($this->table()->where('migration', $migrationFileName)->first());
+    }
 }
