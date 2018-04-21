@@ -12,7 +12,7 @@
 
     <!-- Detect coding standard violations and print to screen if error occurs. -->
     <target name="phpcs" description="Detect coding standard violations">
-        <phpcodesniffer standard="./vendor/chadicus/coding-standard/Chadicus" haltonerror="true" file="src">
+        <phpcodesniffer standard="PSR2" haltonerror="true" file="src">
             <formatter type="checkstyle" outfile="${reports.dir}/phpcs.log"/>
             <formatter type="full" usefile="false"/>
         </phpcodesniffer>
@@ -60,10 +60,11 @@
             </then>
         </if>
 
-        <!-- Verify 100% Code Coverage -->
+        <!-- Verify 90% Code Coverage -->
         <xmlproperty file="${reports.dir}/coverage.xml" collapseAttributes="true"/>
+        <php expression="floor(${snapshot.totalcovered}/${snapshot.totalcount})" returnProperty="belowCoverage" />
         <if>
-            <equals arg1="${snapshot.totalcount}/${snapshot.totalcovered}*100" arg2="90"/>
+            <equals arg1="${belowCoverage}" arg2="0"/>
             <then>
                 <fail msg="!${line.separator}${line.separator}Code Coverage needs to be increased 90% still:  file://${reports.dir}/index.html" />
             </then>
