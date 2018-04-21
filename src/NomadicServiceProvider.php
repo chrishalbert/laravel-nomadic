@@ -4,11 +4,14 @@ namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Database\MigrationServiceProvider;
 
+/**
+ * Class NomadicServiceProvider
+ * @package ChrisHalbert\LaravelNomadic
+ */
 class NomadicServiceProvider extends MigrationServiceProvider
 {
     /**
      * Perform post-registration booting of services.
-     *
      * @return void
      */
     public function boot()
@@ -20,21 +23,18 @@ class NomadicServiceProvider extends MigrationServiceProvider
 
     /**
      * Register the migration repository service.
-     *
      * @return void
      */
     protected function registerRepository()
     {
         $this->app->singleton('migration.repository', function ($app) {
             $table = $app['config']['database.migrations'];
-
             return new DatabaseNomadicRepository($app['db'], $table);
         });
     }
 
     /**
      * Register the migrator service.
-     *
      * @return void
      */
     protected function registerMigrator()
@@ -44,14 +44,12 @@ class NomadicServiceProvider extends MigrationServiceProvider
         // so the migrator can resolve any of these connections when it needs to.
         $this->app->singleton('migrator', function ($app) {
             $repository = $app['migration.repository'];
-
             return new NomadicMigrator($repository, $app['db'], $app['files']);
         });
     }
 
     /**
      * Register the migration creator.
-     *
      * @return void
      */
     protected function registerCreator()
@@ -60,5 +58,4 @@ class NomadicServiceProvider extends MigrationServiceProvider
             return new NomadicMigrationCreator($app['files']);
         });
     }
-
 }

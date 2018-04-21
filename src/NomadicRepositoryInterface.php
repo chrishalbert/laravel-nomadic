@@ -4,14 +4,17 @@ namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 
+/**
+ * Interface NomadicRepositoryInterface
+ * @package ChrisHalbert\LaravelNomadic
+ */
 interface NomadicRepositoryInterface extends MigrationRepositoryInterface
 {
     /**
      * Log that a migration was run.
-     *
-     * @param  string  $file
-     * @param  int     $batch
-     * @param  array   $params
+     * @param string $file   The file.
+     * @param int    $batch  The batch.
+     * @param array  $params Additional properties.
      * @return void
      */
     public function log($file, $batch, $params = array());
