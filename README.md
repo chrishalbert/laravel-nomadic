@@ -37,7 +37,7 @@ may not be accurate.
 * Use Case: A developer updates records in table. Similarly, to rollback, the down() function would need to know the
 exact values of the records prior to updating. This could differ for randomized data.
    
-*** Installing
+### Installing
 1. First, you will need to add the field(s) to your migration table - this is on you to do :)
 2. Next, you will integrate into your application.
 ```
