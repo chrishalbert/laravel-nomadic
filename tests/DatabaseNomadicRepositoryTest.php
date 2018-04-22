@@ -50,6 +50,19 @@ class DatabaseNomadicRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($this->repo->getProperties($fileName));
     }
 
+    public function testGetPropertiesWithUnRunMigration()
+    {
+        $fileName = '2018_04_21_Migration';
+
+        $collection = new Collection();
+
+        $this->repo->expects($this->once())
+            ->method('table')
+            ->willReturn($collection);
+
+        $this->assertEmpty($this->repo->getProperties($fileName));
+    }
+
     public function tearDown()
     {
         unset($this->repo);

@@ -41,6 +41,10 @@ class DatabaseNomadicRepository extends DatabaseMigrationRepository implements N
      */
     public function getProperties($migrationFileName)
     {
-        return get_object_vars($this->table()->where('migration', $migrationFileName)->first());
+        $existingMigration = $this->table()->where('migration', $migrationFileName)->first();
+        if (is_object($existingMigration)) {
+            return get_object_vars($existingMigration);
+        }
+        return [];
     }
 }
