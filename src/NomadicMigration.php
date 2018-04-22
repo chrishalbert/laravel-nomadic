@@ -52,23 +52,29 @@ abstract class NomadicMigration extends Migration
 
     /**
      * Syncs up w/ the database and returns the property.
-     * @param string $key The column name of the migration.
+     * @param string $key     The column name of the migration.
+     * @param bool   $persist By default, we get the property from the db.
      * @return mixed
      */
-    public function getProperty($key)
+    public function getProperty($key, $persist = true)
     {
-        $this->syncWithDb();
+        if ($persist) {
+            $this->syncWithDb();
+        }
         return $this->properties[$key];
     }
 
     /**
      * Returns all properties of the migration.
-     * @return array
+     * @param bool   $persist Whether to sync with the db first.
+     * @return mixed
      */
-    public function getProperties()
+    public function getProperties($persist = false)
     {
-        $this->syncWithDb();
-        return $this->properties;
+        if ($persist) {
+            $this->syncWithDb();
+        }
+            return $this->properties;
     }
 
     /**

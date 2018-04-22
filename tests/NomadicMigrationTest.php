@@ -17,7 +17,8 @@ class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
 
         $this->repo->expects($this->once())
             ->method('getProperties')
-            ->willReturn($this->mockProperties());
+            ->withAnyParameters()
+            ->willReturn($this->mockDbProperties());
 
         $this->migration = $this->getMockForAbstractClass(
             NomadicMigration::class,
@@ -29,12 +30,14 @@ class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetProperty()
     {
         $this->migration->setProperty('author', 'Chris');
-        $this->assertEquals('Chris', $this->migration->getProperty('author'));
+        $this->assertEquals('Chris', $this->migration->getProperty('author', false));
+        $this->assertEquals('DB Chris', $this->migration->getProperty('author'));
     }
 
     public function testGetProperties()
     {
-        $this->assertEquals($this->mockProperties(), $this->migration->getProperties());
+        $this->assertEquals([], $this->migration->getProperties());
+        $this->assertEquals($this->mockDbProperties(), $this->migration->getProperties(true));
     }
 
     public function tearDown()
@@ -43,12 +46,12 @@ class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
         unset($this->migration);
     }
 
-    protected function mockProperties()
+    protected function mockDbProperties()
     {
         return [
             'migration' => '2018_04_21_Migration',
             'batch' => 1,
-            'author' => 'Chris'
+            'author' => 'DB Chris'
         ];
     }
 }
