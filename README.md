@@ -1,7 +1,9 @@
 # laravel-nomadic
 [![Build Status](https://travis-ci.org/chrishalbert/laravel-nomadic.svg?branch=master)](https://travis-ci.org/chrishalbert/laravel-nomadic)
 [![Coverage Status](https://coveralls.io/repos/github/chrishalbert/laravel-nomadic/badge.svg?branch=master)](https://coveralls.io/github/chrishalbert/laravel-nomadic?branch=master)
-
+[![Latest Stable Version](https://poser.pugx.org/chrishalbert/laravel-nomadic/v/stable)](https://packagist.org/packages/chrishalbert/laravel-nomadic)
+[![Total Downloads](https://poser.pugx.org/chrishalbert/laravel-nomadic/downloads)](https://packagist.org/packages/chrishalbert/laravel-nomadic)
+[![License](https://poser.pugx.org/chrishalbert/laravel-nomadic/license)](https://packagist.org/packages/chrishalbert/laravel-nomadic)
 A tool kit of enhancements to Laravel's migrations. 
 
 ## Features
