@@ -19,14 +19,14 @@
   "require-dev": {
     "phing/phing": "2.*",
     "phpunit/phpunit": "4.*",
+    "illuminate/config": "5.*",
     "squizlabs/php_codesniffer": "2.*",
     "chadicus/coding-standard": "~1.0",
     "satooshi/php-coveralls": "1.*"
   },
   "autoload": {
     "psr-4": {
-      "ChrisHalbert\\LaravelNomadic\\": "src",
-      "ChrisHalbert\\LaravelNomadic\\TestsFiles\\": "tests/files"
+      "ChrisHalbert\\LaravelNomadic\\": "src"
     }
   },
   "minimum-stability": "dev",
