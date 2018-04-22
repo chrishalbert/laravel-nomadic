@@ -13,7 +13,8 @@
   "require": {
     "php": "5.* || 7.*",
     "illuminate/database": "5.*",
-    "illuminate/filesystem": "5.*"
+    "illuminate/filesystem": "5.*",
+    "sebastian/peek-and-poke": "^1.0@dev"
   },
   "require-dev": {
     "phing/phing": "2.*",
@@ -24,7 +25,10 @@
   },
   "autoload": {
     "psr-4": {
-      "ChrisHalbert\\LaravelNomadic\\": "src"
+      "ChrisHalbert\\LaravelNomadic\\": "src",
+      "ChrisHalbert\\LaravelNomadic\\TestsFiles\\": "tests/files"
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable" : true
 }
