@@ -4,7 +4,8 @@ namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Support\Collection;
 
-function config() {
+function config()
+{
     return ['name', 'date'];
 }
 

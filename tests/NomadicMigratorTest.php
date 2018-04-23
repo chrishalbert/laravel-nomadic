@@ -21,7 +21,8 @@ class NomadicMigratorTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        function app() {
+        function app()
+        {
             return new DatabaseNomadicRepository(NomadicMigratorTest::$resolver, '');
         }
     }
@@ -82,7 +83,7 @@ class NomadicMigratorTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('log')
-            ->with('2018_04_04_000000_NomadicMockMigration', 1,['property' => 'value']);
+            ->with('2018_04_04_000000_NomadicMockMigration', 1, ['property' => 'value']);
 
         $this->migrator->runUp('2018_04_04_000000_NomadicMockMigration', 1, false);
     }
