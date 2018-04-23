@@ -74,7 +74,7 @@ abstract class NomadicMigration extends Migration
         if ($persist) {
             $this->syncWithDb();
         }
-            return $this->properties;
+        return $this->properties;
     }
 
     /**
