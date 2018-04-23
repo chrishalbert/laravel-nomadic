@@ -16,9 +16,11 @@ class NomadicServiceProvider extends MigrationServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/nomadic.php' => config_path('nomadic.php'),
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/nomadic.php' => config_path('nomadic.php'),
+            ]);
+        }
     }
 
     /**
