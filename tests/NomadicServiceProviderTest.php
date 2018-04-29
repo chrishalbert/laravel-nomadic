@@ -35,7 +35,8 @@ class NomadicServiceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testBoot()
     {
-        function config_path() {
+        function config_path()
+        {
             return 'some/path';
         }
         $dir = dirname(dirname(__FILE__)) . '/src/nomadic.php';
