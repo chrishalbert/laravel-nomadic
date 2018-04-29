@@ -11,11 +11,12 @@ A tool kit of enhancements to Laravel's migrations.
 ## Features
 * **Nomadic Schema** - Associate data with each migration. Maybe you want to save the date and time the migration was run, 
 how long it ran for, or specific data with regards to nature of the migration itself.
+* **Nomadic Traits** - Inject your own custom traits into your migrations so that you can reuse common code.
 * More to come...
 
-## Toolkit Installation - 
+## Installation - 
 
-Local/project installation:
+1. Local/project installation:
 
 ```
 composer require-dev chrishalbert/laravel-nomadic
@@ -29,6 +30,22 @@ or manually add it to the require-dev section of your composer file.
         "chrishalbert/laravel-nomadic": "*"
     }
 }
+```
+
+2. Next, you will integrate into your application.
+```
+php artisan vendor:publish // Installs the nomadic.php config
+```
+
+3. Add the Service Provider to the config/app.php
+```php
+    'providers' => [
+    
+        /**
+         * Custom Providers...
+         */
+        ChrisHalbert\LaravelNomadic\NomadicServiceProvider::class,        
+    ]
 ```
 
 ## Nomadic Schema 
@@ -45,12 +62,7 @@ exact values of the records prior to updating. This could differ for randomized 
    
 ### Installing
 1. First, you will need to add the field(s) to your migration table - this is on you to do :)
-2. Next, you will integrate into your application.
-```
-php artisan vendor:publish // Installs the nomadic.php config
-```
-
-Open up the nomadic.php and add the fields in the schema array
+1. Open up the nomadic.php and add the fields in the schema array
 ```
 return [
     // Just some examples below - these would be the additional columns in your migration table.
@@ -62,19 +74,7 @@ return [
     ],
 ];
 ```
-
-Add the Service Provider to the config/app.php
-```php
-    'providers' => [
-    
-        /**
-         * Custom Providers...
-         */
-        ChrisHalbert\LaravelNomadic\NomadicServiceProvider::class,        
-    ]
-```
-
-Verify the configurations are complete.
+1. Verify the configurations are complete.
 ```
 php artisan make:migration VerifyNomadicInstalled
 ```
@@ -103,6 +103,20 @@ As noted above in your new migration's comments:
         // And now you can $insertedIds = $this->getProperty($migrationColumn) and delete
     }
 ```    
+
+## Nomadic Traits 
+* Use Case: Your team duplicates functionality in multiple migrations and you want to add that to your stub for code reuse.
+   
+### Usage 
+Open up the nomadic.php and add your custom traits
+```
+return [
+    'traits' => [
+        \My\Custom\Trait::class
+    ],
+];
+```
+
  
 ## Feature Requests/Bugs
    Submit feature requests or bugs to [laravel-nomadic Issues](https://github.com/chrishalbert/laravel-nomadic/issues).
