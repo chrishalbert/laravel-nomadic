@@ -60,9 +60,9 @@ may not be accurate.
 * Use Case: A developer updates records in table. Similarly, to rollback, the down() function would need to know the
 exact values of the records prior to updating. This could differ for randomized data.
    
-### Installing
+### Setup
 1. First, you will need to add the field(s) to your migration table - this is on you to do :)
-1. Open up the nomadic.php and add the fields in the schema array
+2. Open up the nomadic.php and add the fields in the schema array
 ```
 return [
     // Just some examples below - these would be the additional columns in your migration table.
@@ -74,14 +74,14 @@ return [
     ],
 ];
 ```
-1. Verify the configurations are complete.
+
+Now, verify the configurations are complete.
 ```
 php artisan make:migration VerifyNomadicInstalled
 ```
 
 In your migration, you should now see that your migration `extends NomadicMigration`.
 
-### Usage
 As noted above in your new migration's comments:
 ```php
     /**
@@ -105,7 +105,7 @@ As noted above in your new migration's comments:
 ```    
 
 ## Nomadic Traits 
-* Use Case: Your team duplicates functionality in multiple migrations and you want to add that to your stub for code reuse.
+* Use Case: Reuse common functionality that your migrations tend to use.
    
 ### Usage 
 Open up the nomadic.php and add your custom traits
@@ -116,7 +116,7 @@ return [
     ],
 ];
 ```
-
+Now when you create migrations, you should see your stubbed migration using your custom traits.
  
 ## Feature Requests/Bugs
    Submit feature requests or bugs to [laravel-nomadic Issues](https://github.com/chrishalbert/laravel-nomadic/issues).
