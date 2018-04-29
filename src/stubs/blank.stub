@@ -4,6 +4,9 @@ use ChrisHalbert\LaravelNomadic\NomadicMigration;
 
 class DummyClass extends NomadicMigration
 {
+    // Traits can be added within configs/nomadic.php
+    // DummyTraits
+
     /**
      * @return void
      */
