@@ -45,6 +45,7 @@ class DatabaseNomadicRepository extends DatabaseMigrationRepository implements N
         if (is_object($existingMigration)) {
             return get_object_vars($existingMigration);
         }
+
         return [];
     }
 }

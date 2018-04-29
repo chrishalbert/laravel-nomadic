@@ -11,7 +11,7 @@
 
     <!-- Detect coding standard violations and print to screen if error occurs. -->
     <target name="phpcs" description="Detect coding standard violations">
-        <phpcodesniffer standard="PSR2" haltonerror="true" file="src">
+        <phpcodesniffer standard="${project.basedir}/vendor/chadicus/coding-standard/Chadicus" haltonerror="true" file="src">
             <formatter type="checkstyle" outfile="${reports.dir}/phpcs.log"/>
             <formatter type="full" usefile="false"/>
         </phpcodesniffer>
