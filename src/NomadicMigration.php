@@ -61,12 +61,13 @@ abstract class NomadicMigration extends Migration
         if ($persist) {
             $this->syncWithDb();
         }
+
         return $this->properties[$key];
     }
 
     /**
      * Returns all properties of the migration.
-     * @param bool   $persist Whether to sync with the db first.
+     * @param bool $persist Whether to sync with the db first.
      * @return mixed
      */
     public function getProperties($persist = false)
@@ -74,6 +75,7 @@ abstract class NomadicMigration extends Migration
         if ($persist) {
             $this->syncWithDb();
         }
+
         return $this->properties;
     }
 

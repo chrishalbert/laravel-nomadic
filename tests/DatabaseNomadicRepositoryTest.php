@@ -4,11 +4,6 @@ namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Support\Collection;
 
-function config()
-{
-    return ['name', 'date'];
-}
-
 class DatabaseNomadicRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     protected $repo;
