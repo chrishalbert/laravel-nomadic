@@ -19,7 +19,7 @@ class NomadicMigrationCreator extends MigrationCreator
         $traits = config('nomadic.traits');
 
         if (!empty($traits) && is_array($traits)) {
-            $stub = $this->appendTraits($traits, $stub);
+            $stub = $this->appendTraits($stub, $traits);
         }
 
         return $stub;
@@ -30,12 +30,13 @@ class NomadicMigrationCreator extends MigrationCreator
         $newlyIncluded = "";
         $uses = array();
         foreach ($traits as $trait) {
-            $trait .= sprintf(self::USE_STUB, $trait) . PHP_EOL;
-            $uses[] = array_pop(explode('\\', $trait));
+            $newlyIncluded .= sprintf(self::USE_STUB, $trait) . PHP_EOL;
+            $trait = explode('\\', $trait);
+            $uses[] = array_pop($trait);
         }
 
-        $currentlyIncluded = sprintf(self::USE_STUB, NomadicMigration::class);
-        $stub = str_replace($currentlyIncluded, $currentlyIncluded . PHP_EOL . $newlyIncluded, $stub);
+        $currentlyIncluded = sprintf(self::USE_STUB, NomadicMigration::class) . PHP_EOL;
+        $stub = str_replace($currentlyIncluded, $currentlyIncluded . $newlyIncluded, $stub);
         $stub = str_replace('// DummyTraits', sprintf(self::USE_STUB, implode(", ", $uses)), $stub);
         return $stub;
     }
