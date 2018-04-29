@@ -1,6 +1,6 @@
 <phpunit backupGlobals="false"
          colors="true"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap.php"
          processIsolation="false"
          stopOnError="false"
          stopOnFailure="false"
@@ -15,7 +15,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="PhpBCC Test Suite">
+        <testsuite name="Laravel-Nomadic Test Suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

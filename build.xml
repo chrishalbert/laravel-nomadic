@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="laravel-nomadic" default="build" basedir=".">
     <target name="build" depends="prepare,phpcs,phpunit,assert"/>
-    <autoloader autoloaderpath="${project.basedir}/vendor/autoload.php"/>
     <property name="reports.dir" value="${project.basedir}/reports" override="true" />
 
     <!-- Prepare the build by cleaning up the artifacts. -->
@@ -28,7 +27,11 @@
         </coverage-setup>
 
         <!-- Run phpunit saving data -->
-        <phpunit printsummary="true" codecoverage="true" errorproperty="phpuniterror" failureproperty="phpunitfailure">
+        <phpunit printsummary="true"
+                 codecoverage="true"
+                 errorproperty="phpuniterror"
+                 failureproperty="phpunitfailure"
+                 bootstrap="${project.basedir}/tests/bootstrap.php">
             <formatter type="xml" todir="${reports.dir}" outfile="phpunit.log"/>
             <formatter type="clover" todir="${reports.dir}"/>
             <batchtest>
