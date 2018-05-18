@@ -16,10 +16,10 @@ how long it ran for, or specific data with regards to nature of the migration it
 
 ## Installation - 
 
-1. Local/project installation:
+1. Installation:
 
 ```
-composer require-dev chrishalbert/laravel-nomadic
+composer require chrishalbert/laravel-nomadic
 ```
 
 or manually add it to the require-dev section of your composer file.
@@ -27,17 +27,12 @@ or manually add it to the require-dev section of your composer file.
 ```json
 {
     "require"   : {
-        "chrishalbert/laravel-nomadic": "*"
+        "chrishalbert/laravel-nomadic": "1.*"
     }
 }
 ```
 
-2. Next, you will integrate into your application.
-```
-php artisan vendor:publish // Installs the nomadic.php config
-```
-
-3. Add the Service Provider to the config/app.php
+2. Next, add the Service Provider to the config/app.php
 ```php
     'providers' => [
     
@@ -47,6 +42,12 @@ php artisan vendor:publish // Installs the nomadic.php config
         ChrisHalbert\LaravelNomadic\NomadicServiceProvider::class,        
     ]
 ```
+
+3. Lastly, publish some default configs into your application.
+```
+php artisan vendor:publish // Installs the nomadic.php config
+```
+
 
 ## Nomadic Schema 
 * Use Case: A developer wants to track the migration's runtime.
