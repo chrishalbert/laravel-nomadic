@@ -9,6 +9,12 @@ function config($configValue) {
         'nomadic.traits' => [
             Illuminate\Support\Traits\CapsuleManagerTrait::class,
             Illuminate\Support\Traits\Macroable::class
+        ],
+        'nomadic.hooks.preCreate' => [
+            function() {}
+        ],
+        'nomadic.hooks.postCreate' => [
+            function() {}
         ]
     ];
 
