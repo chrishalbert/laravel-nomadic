@@ -6,7 +6,7 @@ use ChrisHalbert\LaravelNomadic\Hooks\NomadicHookInterface;
 
 class TestHookConfig implements NomadicHookInterface
 {
-    public function execute($name = '', $path = '', $table = null, $create = false)
+    public function execute($name = '', $path = '', $table = null, $create = false, $className = '', $filePath = '')
     {}
 }
 

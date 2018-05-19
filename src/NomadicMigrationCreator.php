@@ -12,9 +12,29 @@ use Illuminate\Database\Migrations\MigrationCreator;
  */
 class NomadicMigrationCreator extends MigrationCreator
 {
+    /**
+     * Use statement.
+     * @const string
+     */
     const USE_STUB = "use %s;";
 
+    /**
+     * Exception message.
+     * @const string
+     */
     const INVALID_HOOK = "Hook must be an instance of a %s or %s, `%s` given.";
+
+    /**
+     * Name of the class being created.
+     * @var string|null
+     */
+    protected $className = null;
+
+    /**
+     * Full path to the file of the migration.
+     * @var string|null
+     */
+    protected $filePath = null;
 
     /**
      * The registered pre create hooks.
@@ -73,10 +93,39 @@ class NomadicMigrationCreator extends MigrationCreator
      */
     public function create($name, $path, $table = null, $create = false)
     {
-        $params = [$name, $path, $table, $create];
+        $params = [$name, $path, $table, $create, $this->getClassName($name), $this->getPath($name, $path)];
         $this->registerHooks($params);
         $this->firePreCreateHooks();
         return parent::create($name, $path, $table, $create);
+    }
+
+    /**
+     * Gets the class name.
+     * @param string $name
+     * @return null|string
+     */
+    protected function getClassName($name)
+    {
+        if (!isset($this->className)) {
+            $this->className = parent::getClassName($name);
+        }
+
+        return $this->className;
+    }
+
+    /**
+     * Gets the file path.
+     * @param string $name
+     * @param string $path
+     * @return string
+     */
+    protected function getPath($name, $path)
+    {
+        if (!isset($this->filePath)) {
+            $this->filePath = parent::getPath($name, $path);
+        }
+
+        return $this->filePath;
     }
 
     protected function appendHook(&$hookStack, $callback, $params)
