@@ -67,7 +67,7 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         };
 
         $this->creator->beforeCreateExecute($beforeCallback); // first
-        $this->creator->afterCreateExecute($hook, ['afterName', '', 'afterTable', true]); // third
+        $this->creator->afterCreateExecute($hook, ['afterName', '', 'afterTable', true, 'PostHook', '/file/PostHook.php']); // third
         $this->creator->beforeCreateExecute($hook, ['beforeName', 'beforePath']); // second
         $this->creator->afterCreateExecute($afterCallback); // fourth
 
@@ -86,10 +86,10 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $invocations = $spy->getInvocations();
 
         $this->assertEquals(4, count($invocations));
-        $this->assertEquals(['beforeCallback', '', null, false], $invocations[0]->parameters);
-        $this->assertEquals(['beforeName', 'beforePath', null, false], $invocations[1]->parameters);
-        $this->assertEquals(['afterName', '', 'afterTable', true], $invocations[2]->parameters);
-        $this->assertEquals(['afterCallback', '', null, false], $invocations[3]->parameters);
+        $this->assertEquals(['beforeCallback', '', null, false, '', ''], $invocations[0]->parameters);
+        $this->assertEquals(['beforeName', 'beforePath', null, false, '', ''], $invocations[1]->parameters);
+        $this->assertEquals(['afterName', '', 'afterTable', true, 'PostHook', '/file/PostHook.php'], $invocations[2]->parameters);
+        $this->assertEquals(['afterCallback', '', null, false, '', ''], $invocations[3]->parameters);
     }
 
     public function tearDown()
