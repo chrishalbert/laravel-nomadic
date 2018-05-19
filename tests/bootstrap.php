@@ -2,6 +2,13 @@
 
 require_once dirname(dirname(__FILE__)) . "/vendor/autoload.php";
 
+use ChrisHalbert\LaravelNomadic\Hooks\NomadicHookInterface;
+
+class TestHookConfig implements NomadicHookInterface
+{
+    public function execute($name = '', $path = '', $table = null, $create = false)
+    {}
+}
 
 function config($configValue) {
     $configs = [
@@ -14,7 +21,7 @@ function config($configValue) {
             function() {}
         ],
         'nomadic.hooks.postCreate' => [
-            function() {}
+            new TestHookConfig()
         ]
     ];
 
