@@ -130,14 +130,14 @@ passed to the execute() method, which is what is called.
 ```
 return [
     'hooks' => [
-		'preCreate' => [
-        	function() {
-				\Log::info('Make sure to run all migrations');
-			},
-		],
-		'postCreate' => [
-			new HookInterfaceImplementation()
-		]
+        'preCreate' => [
+            function() {
+                \Log::info('Make sure to run all migrations');
+            },
+        ],
+        'postCreate' => [
+            new HookInterfaceImplementation()
+        ]
     ],
 ];
 ```
