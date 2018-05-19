@@ -6,12 +6,13 @@
 [![License](https://poser.pugx.org/chrishalbert/laravel-nomadic/license)](https://packagist.org/packages/chrishalbert/laravel-nomadic)
 
 
-A tool kit of enhancements to Laravel's migrations. 
+A configuration based tool kit of enhancements to Laravel's migrations. Exposes functionality so that developers can customize how migrations are generated. 
 
 ## Features
 * **Nomadic Schema** - Associate data with each migration. Maybe you want to save the date and time the migration was run, 
 how long it ran for, or specific data with regards to nature of the migration itself.
 * **Nomadic Traits** - Inject your own custom traits into your migrations so that you can reuse common code.
+* **Nomadic Hooks** - Apply hooks before or after a migration is generated.
 * More to come...
 
 ## Installation - 
@@ -118,7 +119,29 @@ return [
 ];
 ```
 Now when you create migrations, you should see your stubbed migration using your custom traits.
- 
+
+## Nomadic Hooks
+* Use Case: You would like to alert the developer to run all migrations before creating a new one.
+* Use Case: After a migration is generated, you want to remind the user to add schema changes to the release notes.
+
+### Usage 
+Open up the nomadic.php and add 2 different types of hooks. You can pass a closure, or you can pass a NomadicHookInterface.
+The benefit of passing the NomadicHookInterface, is that you get the same data passed to the create(). These arguments are
+passed to the execute() method, which is what is called.
+```
+return [
+    'hooks' => [
+        'preCreate' => [
+            function() {
+                \Log::info('Make sure to run all migrations');
+            },
+        ],
+        'postCreate' => [
+            new HookInterfaceImplementation()
+        ]
+    ],
+];
+```
 ## Feature Requests/Bugs
    Submit feature requests or bugs to [laravel-nomadic Issues](https://github.com/chrishalbert/laravel-nomadic/issues).
    
