@@ -13,16 +13,16 @@
   "require": {
     "php": "5.* || 7.*",
     "illuminate/database": "5.*",
-    "illuminate/filesystem": "5.*",
-    "sebastian/peek-and-poke": "^1.0@dev"
+    "illuminate/filesystem": "5.*"
   },
   "require-dev": {
     "phing/phing": "2.*",
-    "phpunit/phpunit": "4.*",
+    "phpunit/phpunit": "4.* || 5.*",
     "illuminate/config": "5.*",
     "squizlabs/php_codesniffer": "2.*",
     "chadicus/coding-standard": "~1.0",
-    "satooshi/php-coveralls": "1.*"
+    "sebastian/peek-and-poke": "^1.0@dev",
+    "php-coveralls/php-coveralls": "2.*"
   },
   "autoload": {
     "psr-4": {
