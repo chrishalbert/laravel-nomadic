@@ -42,9 +42,10 @@ abstract class NomadicMigration extends Migration
     protected $fileName;
 
     /**
-     *
+     * Migration hooks.
+     * @var array
      */
-    protected $migrationHooks = [
+    private $migrationHooks = [
         self::CONSTRUCT => [],
         self::PRE_MIGRATE => [],
         self::POST_MIGRATE => [],
@@ -56,8 +57,9 @@ abstract class NomadicMigration extends Migration
     /**
      * NomadicMigration constructor.
      * @param NomadicRepositoryInterface $repository The repository.
+     * @throws \Exception If the hook isset not as an array though.
      */
-    final public function __construct(NomadicRepositoryInterface $repository)
+    public function __construct(NomadicRepositoryInterface $repository)
     {
         $this->properties = array();
         $this->repository = $repository;
@@ -67,19 +69,29 @@ abstract class NomadicMigration extends Migration
             if (isset($configHooks[$hook]) && !is_array($configHooks[$hook])) {
                 throw new \Exception("Configs for nomadic hook `{$hook}` must an array.");
             }
+
             $values = $configHooks[$hook];
         }
+
         $this->runHooks(self::CONSTRUCT);
     }
 
-    final public function up()
+    /**
+     * Runs the up with the hooks.
+     * @return void
+     */
+    public function up()
     {
         $this->runHooks(self::PRE_MIGRATE);
         static::migrate();
         $this->runHooks(self::POST_MIGRATE);
     }
 
-    final public function down()
+    /**
+     * Runs the down with the hooks.
+     * @return void
+     */
+    public function down()
     {
         $this->runHooks(self::PRE_ROLLBACK);
         static::rollback();
@@ -126,17 +138,26 @@ abstract class NomadicMigration extends Migration
         return $this->properties;
     }
 
+    /**
+     * Adds a hook to a specific hook type.
+     * @param string                        $name Name of the hook.
+     * @param NomadicMigrationHookInterface $hook The hook being added.
+     * @return void
+     * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
+     */
     public function addHook($name, NomadicMigrationHookInterface $hook)
     {
         $this->verifyValidHook($name);
 
-        if (isset($this->migrationHooks[$name])) {
-            throw new \Exception("Invalid migration hook `{$name}`.");
-        }
-
         $this->migrationHooks[$name][] = $hook;
     }
 
+    /**
+     * Returns the hooks for a hook type.
+     * @param string $name Name of the hook.
+     * @return array
+     * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
+     */
     public function getHooks($name)
     {
         $this->verifyValidHook($name);
@@ -144,17 +165,31 @@ abstract class NomadicMigration extends Migration
         return $this->migrationHooks[$name];
     }
 
+    /**
+     * Clears certain hooks.
+     * @param string $name Name of a hook.
+     * @return void
+     * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
+     */
     public function clearHooks($name)
     {
         $this->verifyValidHook($name);
         $this->migrationHooks[$name] = [];
     }
 
+    /**
+     * Destructor for the class.
+     */
     public function __destruct()
     {
         $this->execute(self::DESTRUCT);
     }
 
+    /**
+     * Verifies whether or not the hook is a valid type.
+     * @param string $name Name of a hook.
+     * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
+     */
     protected function verifyValidHook($name)
     {
         if (isset($this->migrationHooks[$name])) {
@@ -162,6 +197,11 @@ abstract class NomadicMigration extends Migration
         }
     }
 
+    /**
+     * Runs an array of hooks.
+     * @param string $name Name of a hook type.
+     * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
+     */
     protected function runHooks($name)
     {
         $this->verifyValidHook($name);
@@ -171,6 +211,10 @@ abstract class NomadicMigration extends Migration
         }
     }
 
+    /**
+     * Runs a hook.
+     * @param NomadicMigrationHookInterface $hook A hook to execute.
+     */
     protected function runHook(NomadicMigrationHookInterface $hook)
     {
         $hook->execute();
