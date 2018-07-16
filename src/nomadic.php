@@ -10,13 +10,33 @@ return [
     'traits' => [
     ],
 
-    // Pass in hooks that execute before a migration is created, and after a migration is created
+    // Variety of hooks
+    // preCreate, postCreate: Executed with `php artisan make:migration`, must be defined here
+    // other hooks: Executed with the migrations
     'hooks' => [
         'preCreate' => [
-
+            // Runs before a migration is created
         ],
         'postCreate' => [
-
+            // Runs after a migration is created
         ],
+        'construct' => [
+            // Runs after the parent constructor
+        ],
+        'preMigrate' => [
+            // Runs before the migration code
+        ],
+        'postMigrate' => [
+            // Runs after the migration code
+        ],
+        'preRollback' => [
+            // Runs before the rollback
+        ],
+        'postRollback' => [
+            // Runs after the rollback
+        ],
+        'destruct' => [
+            // Runs before the parent destructor
+        ]
     ],
 ];
