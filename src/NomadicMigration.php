@@ -182,7 +182,7 @@ abstract class NomadicMigration extends Migration
      */
     public function __destruct()
     {
-        $this->execute(self::DESTRUCT);
+        $this->runHooks(self::DESTRUCT);
     }
 
     /**
