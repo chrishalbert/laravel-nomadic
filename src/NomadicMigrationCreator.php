@@ -198,7 +198,7 @@ class NomadicMigrationCreator extends MigrationCreator
         return $stub;
     }
 
-    protected function firePostCreateHooks()
+    protected function firePostCreateHooks($table = null)
     {
         $this->fireHook($this->postCreate);
     }
