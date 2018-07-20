@@ -10,20 +10,67 @@ class TestHookConfig implements NomadicHookInterface
     {}
 }
 
-function config($configValue) {
-    $configs = [
-        'nomadic.schema' => ['name', 'date'],
-        'nomadic.traits' => [
-            Illuminate\Support\Traits\CapsuleManagerTrait::class,
-            Illuminate\Support\Traits\Macroable::class
-        ],
-        'nomadic.hooks.preCreate' => [
-            function() {}
-        ],
-        'nomadic.hooks.postCreate' => [
-            new TestHookConfig()
-        ]
-    ];
+class ConfigMock
+{
+    protected static $instance;
 
-    return $configs[$configValue];
+    protected static $configs;
+
+    private function __construct()
+    {
+        static::$configs = [
+            'nomadic.schema' => ['name', 'date'],
+            'nomadic.traits' => [
+                Illuminate\Support\Traits\CapsuleManagerTrait::class,
+                Illuminate\Support\Traits\Macroable::class
+            ],
+            'nomadic.hooks.preCreate' => [
+                function () {
+                }
+            ],
+            'nomadic.hooks.postCreate' => [
+                new TestHookConfig()
+            ],
+            'nomadic.hooks' => [
+                'preCreate' => [],
+                'postCreate' => [],
+                'construct' => [],
+                'preMigrate' => [],
+                'postMigrate' => [],
+                'preRollback' => [],
+                'postRollback' => [],
+                'destruct' => []
+            ]
+        ];
+    }
+
+    public static function set($key, $value)
+    {
+        self::$configs[$key] = $value;
+    }
+
+    public static function get($key)
+    {
+        return self::$configs[$key];
+    }
+
+    public static function reset()
+    {
+        self::$instance = new ConfigMock();
+    }
+
+    public static function instance()
+    {
+        if (!self::$instance) {
+            self::$instance = new ConfigMock();
+        }
+        return self::$instance;
+    }
+}
+
+$instance = ConfigMock::instance();
+
+function config($configValue) {
+
+    return ConfigMock::get($configValue);
 }

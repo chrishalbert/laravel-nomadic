@@ -10,7 +10,7 @@ class DummyClass extends NomadicMigration
     /**
      * @return void
      */
-    public function up()
+    public function migrate()
     {
         // Use $this->setProperty($migrationColumn, $insertedIds);
         // The $migrationColumn MUST be added to the configs/nomadic.php
@@ -21,7 +21,7 @@ class DummyClass extends NomadicMigration
      *
      * @return void
      */
-    public function down()
+    public function rollback()
     {
         // And now you can $insertedIds = $this->getProperty($migrationColumn) and delete
     }
