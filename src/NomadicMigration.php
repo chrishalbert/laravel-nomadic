@@ -67,10 +67,12 @@ abstract class NomadicMigration extends Migration
         $configHooks = config('nomadic.hooks');
         foreach ($this->migrationHooks as $hook => &$values) {
             if (isset($configHooks[$hook]) && !is_array($configHooks[$hook])) {
-                throw new \Exception("Configs for nomadic hook `{$hook}` must an array.");
+                throw new \Exception("Configs for nomadic hook `{$hook}` must be an array.");
             }
 
-            $values = $configHooks[$hook];
+            if (isset($configHooks[$hook])) {
+                $values = $configHooks[$hook];
+            }
         }
 
         $this->runHooks(self::CONSTRUCT);
@@ -83,7 +85,7 @@ abstract class NomadicMigration extends Migration
     public function up()
     {
         $this->runHooks(self::PRE_MIGRATE);
-        static::migrate();
+        $this->migrate();
         $this->runHooks(self::POST_MIGRATE);
     }
 
@@ -94,8 +96,28 @@ abstract class NomadicMigration extends Migration
     public function down()
     {
         $this->runHooks(self::PRE_ROLLBACK);
-        static::rollback();
+        $this->rollback();
         $this->runHooks(self::POST_ROLLBACK);
+    }
+
+    /**
+     * Placeholder to define migrations. Not an abstract method in case the developer
+     * chooses to override the up() and to ensure backwards compatibility.
+     * @return void
+     */
+    public function migrate()
+    {
+        return;
+    }
+
+    /**
+     * Placeholder to define rollback. Not an abstract method in case the developer
+     * chooses to override the down() and to ensure backwards compatibility.
+     * @return void
+     */
+    public function rollback()
+    {
+        return;
     }
 
     /**
@@ -192,7 +214,7 @@ abstract class NomadicMigration extends Migration
      */
     protected function verifyValidHook($name)
     {
-        if (isset($this->migrationHooks[$name])) {
+        if (!isset($this->migrationHooks[$name])) {
             throw new \Exception("Invalid migration hook `{$name}`.");
         }
     }
@@ -205,7 +227,6 @@ abstract class NomadicMigration extends Migration
     protected function runHooks($name)
     {
         $this->verifyValidHook($name);
-
         foreach ($this->migrationHooks[$name] as $hook) {
             $this->runHook($hook);
         }
