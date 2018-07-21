@@ -19,6 +19,6 @@ class PrintRunning implements NomadicMigrationHookInterface
     public function execute(NomadicMigration $migration = null)
     {
         $migrationFileName = $migration ? $migration->getFileName() : 'Migration';
-        echo $migrationFileName . ' started at ' . Carbon::now()->toDateTimeString();
+        echo $migrationFileName . ' started at ' . Carbon::now()->toDateTimeString() . PHP_EOL;
     }
 }
