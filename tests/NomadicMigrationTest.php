@@ -3,6 +3,9 @@
 namespace ChrisHalbert\LaravelNomadic;
 
 use ChrisHalbert\LaravelNomadic\Hooks\NomadicMigrationHookInterface;
+use ChrisHalbert\LaravelNomadic\Hooks\PrintRunning;
+use ChrisHalbert\LaravelNomadic\Traits\Printable;
+use Illuminate\Support\Carbon;
 
 class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,6 +40,61 @@ class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
             true
         );
     }
+
+    public function testUpWithHookReceivingMigrationParameter()
+    {
+        $migration = new \NomadicMockMigration($this->repo);
+        $migration->addHook(NomadicMigration::PRE_MIGRATE, new PrintRunning());
+
+        $this->expectOutputRegex('/' . \NomadicMockMigration::class . ' started at/');
+        $migration->up();
+    }
+
+    public function testUpWithCallableReceivingMigrationParameter()
+    {
+        $migration = new \NomadicMockMigration($this->repo);
+        $migration->addHook(NomadicMigration::PRE_MIGRATE, function ($migration) {
+            echo $migration->getFileName() . ' ran in closure';
+        });
+
+        $this->expectOutputRegex('/' . \NomadicMockMigration::class . ' ran in closure/');
+        $migration->up();
+    }
+
+    public function testPrintableTrait()
+    {
+        $migration = new \NomadicMigrationWithPrintable($this->repo);
+
+        $this->expectOutputRegex('/' . \NomadicMigrationWithPrintable::class . ' started at/');
+        $this->expectOutputRegex('/' . \NomadicMigrationWithPrintable::class . ' finished at/');
+
+        $migration->up();
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Must be an instance of a `NomadicMigrationHookInterface` or `Closure`
+     */
+    public function testInvalidHookTypeInitialized()
+    {
+        \ConfigMock::set('nomadic.hooks', ['construct' => [5]]);
+        $this->getMockForAbstractClass(
+            NomadicMigration::class,
+            [$this->repo],
+            '',
+            true
+        );
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Must be an instance of a `NomadicMigrationHookInterface` or `Closure`
+     */
+    public function testInvalidHookTypeAdded()
+    {
+        $this->migration->addHook(NomadicMigration::PRE_ROLLBACK, 5);
+    }
+
 
     public function testMigrationHooks()
     {
