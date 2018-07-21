@@ -29,6 +29,13 @@
       "ChrisHalbert\\LaravelNomadic\\": "src"
     }
   },
+  "autoload-dev": {
+    "files": [
+      "tests/files/2018_04_04_000000_StandardMigration.php",
+      "tests/files/2018_04_04_000000_NomadicMockMigration.php",
+      "tests/files/2018_04_04_000000_NomadicMigrationWithPrintable.php"
+    ]
+  },
   "minimum-stability": "dev",
   "prefer-stable" : true
 }
