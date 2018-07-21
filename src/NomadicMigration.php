@@ -23,6 +23,8 @@ abstract class NomadicMigration extends Migration
 
     const DESTRUCT = 'destruct';
 
+    const HOOK_TYPE_EXCEPTION = 'Must be an instance of a `NomadicMigrationHookInterface` or `Closure`';
+
     /**
      * Additional properties or column names in your migration table.
      * @var array
@@ -64,16 +66,8 @@ abstract class NomadicMigration extends Migration
         $this->properties = array();
         $this->repository = $repository;
         $this->fileName = basename((new \ReflectionClass($this))->getFileName(), '.php');
-        $configHooks = config('nomadic.hooks');
-        foreach ($this->migrationHooks as $hook => &$values) {
-            if (isset($configHooks[$hook]) && !is_array($configHooks[$hook])) {
-                throw new \Exception("Configs for nomadic hook `{$hook}` must be an array.");
-            }
-
-            if (isset($configHooks[$hook])) {
-                $values = $configHooks[$hook];
-            }
-        }
+        $this->initHooks();
+        $this->initTraits();
 
         $this->runHooks(self::CONSTRUCT);
     }
@@ -121,6 +115,15 @@ abstract class NomadicMigration extends Migration
     }
 
     /**
+     * Returns the filename.
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    /**
      * Set the values of this specific migration.
      * @param string $key   The column name.
      * @param mixed  $value The value to be inserted.
@@ -162,13 +165,17 @@ abstract class NomadicMigration extends Migration
 
     /**
      * Adds a hook to a specific hook type.
-     * @param string                        $name Name of the hook.
-     * @param NomadicMigrationHookInterface $hook The hook being added.
+     * @param string                                $name Name of the hook.
+     * @param NomadicMigrationHookInterface|Closure $hook The hook being added.
      * @return void
      * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
      */
-    public function addHook($name, NomadicMigrationHookInterface $hook)
+    public function addHook($name, $hook)
     {
+        if (!($hook instanceof NomadicMigrationHookInterface || $hook instanceof \Closure)) {
+            throw new \Exception(self::HOOK_TYPE_EXCEPTION);
+        }
+
         $this->verifyValidHook($name);
 
         $this->migrationHooks[$name][] = $hook;
@@ -208,6 +215,42 @@ abstract class NomadicMigration extends Migration
     }
 
     /**
+     * Initializes the hooks. Since hooks are a little more limited than traits, this happens
+     * before the initTraits.
+     * @throws \Exception
+     */
+    protected function initHooks()
+    {
+        $configHooks = config('nomadic.hooks');
+        foreach ($this->migrationHooks as $hook => &$values) {
+            if (isset($configHooks[$hook]) && !is_array($configHooks[$hook])) {
+                throw new \Exception("Configs for nomadic hook `{$hook}` must be an array.");
+            }
+
+            if (isset($configHooks[$hook])) {
+                $values = $configHooks[$hook];
+            }
+        }
+    }
+
+    /**
+     * Initializes the traits based on the trait `ClassName` searching for initClassName() method.
+     * This should come after initHooks. InitTraits can initialize hooks and if reordering of hooks
+     * is necessary, it can happen in the traits.
+     */
+    protected function initTraits()
+    {
+        $traits = class_uses($this);
+
+        foreach ($traits as $trait) {
+            $initMethod = sprintf("init" . class_basename($trait));
+            if (method_exists($trait, $initMethod)) {
+                $this->{$initMethod}();
+            }
+        }
+    }
+
+    /**
      * Verifies whether or not the hook is a valid type.
      * @param string $name Name of a hook.
      * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
@@ -234,11 +277,22 @@ abstract class NomadicMigration extends Migration
 
     /**
      * Runs a hook.
-     * @param NomadicMigrationHookInterface $hook A hook to execute.
+     * @param string $hook A hook to execute.
+     * @throws \Exception If not Closure or NomadicMigrationHookInterface.
      */
-    protected function runHook(NomadicMigrationHookInterface $hook)
+    protected function runHook($hook)
     {
-        $hook->execute();
+        if ($hook instanceof NomadicMigrationHookInterface) {
+            $hook->execute($this);
+            return;
+        }
+
+        if ($hook instanceof \Closure) {
+            $hook($this);
+            return;
+        }
+
+        throw new \Exception(self::HOOK_TYPE_EXCEPTION);
     }
 
     /**
