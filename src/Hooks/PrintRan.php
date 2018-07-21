@@ -3,7 +3,7 @@
 namespace ChrisHalbert\LaravelNomadic\Hooks;
 
 use ChrisHalbert\LaravelNomadic\NomadicMigration;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 /**
  * Class PrintRunning
