@@ -17,6 +17,6 @@ trait Printable
         $this->addHook(NomadicMigration::PRE_MIGRATE, new PrintRunning());
         $this->addHook(NomadicMigration::POST_MIGRATE, new PrintRan());
         $this->addHook(NomadicMigration::PRE_ROLLBACK, new PrintRunning());
-        $this->addHook(NomadicMigration::POST_MIGRATE, new PrintRan());
+        $this->addHook(NomadicMigration::POST_ROLLBACK, new PrintRan());
     }
 }
