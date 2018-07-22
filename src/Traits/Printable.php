@@ -14,9 +14,9 @@ trait Printable
      */
     public function initPrintable()
     {
-        parent::addHook(NomadicMigration::PRE_MIGRATE, new PrintRunning());
-        parent::addHook(NomadicMigration::POST_MIGRATE, new PrintRan());
-        parent::addHook(NomadicMigration::PRE_ROLLBACK, new PrintRunning());
-        parent::addHook(NomadicMigration::POST_MIGRATE, new PrintRan());
+        $this->addHook(NomadicMigration::PRE_MIGRATE, new PrintRunning());
+        $this->addHook(NomadicMigration::POST_MIGRATE, new PrintRan());
+        $this->addHook(NomadicMigration::PRE_ROLLBACK, new PrintRunning());
+        $this->addHook(NomadicMigration::POST_ROLLBACK, new PrintRan());
     }
 }

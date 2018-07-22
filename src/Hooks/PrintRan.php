@@ -19,6 +19,6 @@ class PrintRan implements NomadicMigrationHookInterface
     public function execute(NomadicMigration $migration = null)
     {
         $migrationFileName = $migration ? $migration->getFileName() : 'Migration';
-        echo $migrationFileName . ' finished at ' . Carbon::now()->toDateTimeString();
+        echo $migrationFileName . ' finished at ' . Carbon::now()->toDateTimeString() . PHP_EOL;
     }
 }
