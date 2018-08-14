@@ -14,7 +14,7 @@
     "php": "5.* || 7.*",
     "illuminate/database": "5.*",
     "illuminate/filesystem": "5.*",
-    "nesbot/carbon": "^1.31"
+    "nesbot/carbon": "^1.25"
   },
   "require-dev": {
     "phing/phing": "2.*",
