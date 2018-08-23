@@ -61,15 +61,6 @@ class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
         $migration->up();
     }
 
-    public function testPrintableTrait()
-    {
-        $migration = new \NomadicMigrationWithPrintable($this->repo);
-
-        $this->expectOutputRegex('/' . \NomadicMigrationWithPrintable::class . ' started at/');
-        $this->expectOutputRegex('/' . \NomadicMigrationWithPrintable::class . ' finished at/');
-
-        $migration->up();
-    }
 
     /**
      * @expectedException \Exception
