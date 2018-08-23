@@ -19,57 +19,29 @@
 
     <!-- Run phpunit with code coverage and generate reports -->
     <target name="phpunit" description="Run phpunit tests">
-        <!-- Specify coverage and path to save coverage stats -->
-        <coverage-setup database="${reports.dir}/coverage.db">
-            <fileset dir="src">
-                <include name="**/*.php"/>
-            </fileset>
-        </coverage-setup>
-
-        <!-- Run phpunit saving data -->
-        <phpunit printsummary="true"
-                 codecoverage="true"
-                 errorproperty="phpuniterror"
-                 failureproperty="phpunitfailure"
-                 bootstrap="${project.basedir}/tests/bootstrap.php">
-            <formatter type="xml" todir="${reports.dir}" outfile="phpunit.log"/>
-            <formatter type="clover" todir="${reports.dir}"/>
-            <batchtest>
-                <fileset dir="${project.basedir}/tests">
-                    <include name="**/*Test.php"/>
-                </fileset>
-            </batchtest>
-        </phpunit>
-
-        <!-- Generate the reports using phing -->
-        <phpunitreport infile="${project.basedir}/phpunit.xml" format="frames" todir="${reports.dir}"/>
-        <coverage-report outfile="${reports.dir}/coverage.xml">
-            <report toDir="${reports.dir}"/>
-        </coverage-report>
+        <exec command="${project.basedir}/vendor/bin/phpunit -c ${project.basedir}/phpunit.xml"
+           returnProperty="phpunitreturn" outputProperty="phpunitoutput"/>
+        <if>
+            <not>
+                <equals arg1="${phpunitreturn}" arg2="0"/>
+            </not>
+            <then>
+                <fail msg="${phpunitoutput}"/>
+            </then>
+        </if>
     </target>
 
     <!-- Make sure tests didnt fail and code coverage standards are met -->
     <target name="assert" description="Assert project standards met.">
-        <!-- Verify that phpunit error or fail -->
-        <exec command="cat ${reports.dir}/phpunit.log" outputProperty="phpunitoutput"/>
-        <if>
-            <or>
-                <equals arg1="${phpuniterror}" arg2="true"/>
-                <equals arg1="${phpunitfailure}" arg2="true"/>
-            </or>
-            <then>
-                <fail msg="!${line.separator}${line.separator}${phpunitoutput}" />
-
-            </then>
-        </if>
-
-        <!-- Verify 90% Code Coverage -->
+        <!-- Verify 100% Code Coverage -->
         <xmlproperty file="${reports.dir}/coverage.xml" collapseAttributes="true"/>
-        <php expression="floor(${snapshot.totalcovered}/${snapshot.totalcount})" returnProperty="belowCoverage" />
+        <php expression="floor(${coverage.project.metrics.coveredelements}/${coverage.project.metrics.elements})" returnProperty="belowCoverage" />
         <if>
             <equals arg1="${belowCoverage}" arg2="0"/>
             <then>
-                <fail msg="!${line.separator}${line.separator}Code Coverage needs to be increased 90% still:  file://${reports.dir}/index.html" />
+                <php expression="round(${coverage.project.metrics.coveredelements}/${coverage.project.metrics.elements}*100, 2)" returnProperty="codecoverage"/>
+                <warn>Code Coverage: ${codecoverage} %</warn>
+                <fail msg="!${line.separator}${line.separator}Code Coverage needs to be increased 100% still:  file://${reports.dir}/index.html" />
             </then>
         </if>
     </target>
