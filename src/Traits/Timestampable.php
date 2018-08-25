@@ -8,17 +8,17 @@ use ChrisHalbert\LaravelNomadic\NomadicMigration;
 trait Timestampable
 {
     /**
-     * Initializes printable.
+     * Initializes timestampable.
      * @return void
      */
-    public function initPrintable()
+    public function initTimestampable()
     {
         $self = $this;
         $this->addHook(NomadicMigration::PRE_MIGRATE, function () use ($self) {
-            $self->set('started_at', Carbon::now());
+            $self->setProperty('started_at', Carbon::now());
         });
         $this->addHook(NomadicMigration::POST_MIGRATE, function () use ($self) {
-            $self->set('finished_at', Carbon::now());
+            $self->setProperty('finished_at', Carbon::now());
         });
     }
 }
