@@ -34,7 +34,8 @@
     "files": [
       "tests/files/2018_04_04_000000_StandardMigration.php",
       "tests/files/2018_04_04_000000_NomadicMockMigration.php",
-      "tests/files/2018_04_04_000000_NomadicMigrationWithPrintable.php"
+      "tests/files/2018_04_04_000000_NomadicMigrationWithPrintable.php",
+      "tests/files/2018_08_15_000000_NomadicMigrationWithTimestampable.php"
     ]
   },
   "minimum-stability": "dev",
