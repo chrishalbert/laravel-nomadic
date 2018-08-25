@@ -20,7 +20,6 @@ class PrintableTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         unset($this->repo);
-        unset($this->migration);
         \ConfigMock::reset();
     }
 
