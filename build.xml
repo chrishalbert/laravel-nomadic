@@ -19,14 +19,15 @@
 
     <!-- Run phpunit with code coverage and generate reports -->
     <target name="phpunit" description="Run phpunit tests">
-        <exec command="${project.basedir}/vendor/bin/phpunit -c ${project.basedir}/phpunit.xml"
-           returnProperty="phpunitreturn" outputProperty="phpunitoutput"/>
+        <exec command="${project.basedir}/vendor/bin/phpunit -c ${project.basedir}/phpunit.xml >> ${reports.dir}/phpunit.log"
+           returnProperty="phpunitreturn" />
         <if>
             <not>
                 <equals arg1="${phpunitreturn}" arg2="0"/>
             </not>
             <then>
-                <fail msg="${phpunitoutput}"/>
+                <exec command="sed -e '/Generating code coverage report in Clover XML format/,$d' ${reports.dir}/phpunit.log" outputProperty="failedtests"/>
+                <fail msg="${failedtests}"/>
             </then>
         </if>
     </target>
