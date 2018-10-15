@@ -8,6 +8,8 @@ class DummyClass extends NomadicMigration
     // DummyTraits
 
     /**
+     * Run the migrations.
+     *
      * @return void
      */
     public function migrate()

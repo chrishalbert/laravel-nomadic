@@ -73,8 +73,10 @@ abstract class NomadicMigration extends Migration
     }
 
     /**
-     * Runs the up with the hooks.
+     * Run the migrations.
+     *
      * @return void
+     * @throws \Exception
      */
     public function up()
     {
@@ -84,8 +86,10 @@ abstract class NomadicMigration extends Migration
     }
 
     /**
-     * Runs the down with the hooks.
+     * Reverse the migrations.
+     *
      * @return void
+     * @throws \Exception
      */
     public function down()
     {
