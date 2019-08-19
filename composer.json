@@ -11,10 +11,10 @@
     }
   ],
   "require": {
-    "php": "5.* || 7.*",
+    "php": ">=7.3",
     "illuminate/database": "5.*",
     "illuminate/filesystem": "5.*",
-    "nesbot/carbon": "^1.25"
+    "nesbot/carbon": "2.*"
   },
   "require-dev": {
     "phing/phing": "2.*",
