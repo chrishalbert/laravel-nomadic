@@ -32,7 +32,8 @@
                  errorproperty="phpuniterror"
                  failureproperty="phpunitfailure"
                  bootstrap="${project.basedir}/tests/bootstrap.php">
-            <formatter type="xml" todir="${reports.dir}" outfile="phpunit.log"/>
+            <formatter type="xml" todir="${reports.dir}" outfile="phpunit.xml"/>
+            <formatter type="plain" todir="${reports.dir}" outfile="phpunit.log"/>
             <formatter type="clover" todir="${reports.dir}"/>
             <batchtest>
                 <fileset dir="${project.basedir}/tests">
