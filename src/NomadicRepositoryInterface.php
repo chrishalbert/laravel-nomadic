@@ -12,12 +12,12 @@ interface NomadicRepositoryInterface extends MigrationRepositoryInterface
 {
     /**
      * Log that a migration was run.
-     * @param string $file   The file.
-     * @param int    $batch  The batch.
-     * @param array  $params Additional properties.
+     * @param mixed $file   A string of the file.
+     * @param mixed $batch  The int # of the batch.
+     * @param array $params The params.
      * @return void
      */
-    public function log(string $file, int $batch, array $params = array());
+    public function log($file, $batch, array $params = array());
 
     /**
      * Get all the properties.
