@@ -13,8 +13,7 @@
   "require": {
     "php": ">=7.3",
     "illuminate/database": ">=5.8",
-    "illuminate/filesystem": ">=5.8",
-    "nesbot/carbon": "2.*"
+    "illuminate/filesystem": ">=5.8"
   },
   "require-dev": {
     "ext-xdebug": ">=2.7",
