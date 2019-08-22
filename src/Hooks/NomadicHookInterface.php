@@ -18,5 +18,12 @@ interface NomadicHookInterface
      * @param string  $filePath  The full path to the file.
      * @return string
      */
-    public function execute($name = '', $path = '', $table = null, $create = false, $className = '', $filePath = '');
+    public function execute(
+        string $name = '',
+        string $path = '',
+        string $table = null,
+        bool $create = false,
+        string $className = '',
+        string $filePath = ''
+    );
 }

@@ -17,12 +17,12 @@ interface NomadicRepositoryInterface extends MigrationRepositoryInterface
      * @param array  $params Additional properties.
      * @return void
      */
-    public function log($file, $batch, $params = array());
+    public function log(string $file, int $batch, array $params = array());
 
     /**
      * Get all the properties.
      * @param string $migrationFileName The filename
      * @return array
      */
-    public function getProperties($migrationFileName);
+    public function getProperties(string $migrationFileName);
 }

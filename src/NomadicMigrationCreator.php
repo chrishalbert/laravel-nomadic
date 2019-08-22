@@ -67,7 +67,7 @@ class NomadicMigrationCreator extends MigrationCreator
      * @param array    $params   The parameters if applicable.
      * @return void
      */
-    public function beforeCreateExecute($callback, array $params = [])
+    public function beforeCreateExecute(\Closure $callback, array $params = [])
     {
         $this->appendHook($this->preCreate, $callback, $params);
     }
@@ -78,7 +78,7 @@ class NomadicMigrationCreator extends MigrationCreator
      * @param mixed    $params   The parameters if applicable.
      * @return void
      */
-    public function afterCreateExecute($callback, $params = null)
+    public function afterCreateExecute(\Closure $callback, $params = null)
     {
         $this->appendHook($this->postCreate, $callback, $params);
     }
@@ -91,7 +91,7 @@ class NomadicMigrationCreator extends MigrationCreator
      * @param boolean $create Whether to use create stub.
      * @return string
      */
-    public function create($name, $path, $table = null, $create = false)
+    public function create(string $name, string $path, string $table = null, bool $create = false)
     {
         $params = [$name, $path, $table, $create, $this->getClassName($name), $this->getPath($name, $path)];
         $this->registerHooks($params);

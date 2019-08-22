@@ -17,7 +17,7 @@ class DatabaseNomadicRepository extends DatabaseMigrationRepository implements N
      * @param array  $params The params.
      * @return void
      */
-    public function log($file, $batch, $params = [])
+    public function log($file, $batch, array $params = [])
     {
         $schema = config('nomadic.schema');
         unset($params['migrations']);
@@ -39,7 +39,7 @@ class DatabaseNomadicRepository extends DatabaseMigrationRepository implements N
      * @param string $migrationFileName The filename
      * @return array
      */
-    public function getProperties($migrationFileName)
+    public function getProperties(string $migrationFileName)
     {
         $existingMigration = $this->table()->where('migration', $migrationFileName)->first();
         if (is_object($existingMigration)) {
