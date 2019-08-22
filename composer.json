@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "php": "5.* || 7.*",
+    "php": "5.* || <7.3",
     "illuminate/database": "5.*",
     "illuminate/filesystem": "5.*",
     "nesbot/carbon": "^1.25"
@@ -21,7 +21,7 @@
     "phpunit/phpunit": "4.* || 5.*",
     "illuminate/config": "5.*",
     "squizlabs/php_codesniffer": "2.*",
-    "chadicus/coding-standard": "~1.0",
+    "chadicus/coding-standard": ">=1.0 <1.5",
     "sebastian/peek-and-poke": "^1.0@dev",
     "php-coveralls/php-coveralls": "2.*"
   },
