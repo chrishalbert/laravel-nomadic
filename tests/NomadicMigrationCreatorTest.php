@@ -32,10 +32,10 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('use ' . Macroable::class . ';', $stub);
     }
 
-    public function testBeforeCreateExecuteThrowsException()
+    public function testBeforeCreateExecuteThrowsTypeError()
     {
         $this->setExpectedException(
-            \InvalidArgumentException::class,
+            \TypeError::class,
             'Hook must be an instance of a ' . NomadicHookInterface::class . ' or Closure, `string` given.'
         );
         $this->creator->beforeCreateExecute('');
@@ -46,7 +46,7 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $obj = new \stdClass();
 
         $this->setExpectedException(
-            \InvalidArgumentException::class,
+            \TypeError::class,
             'Hook must be an instance of a ' . NomadicHookInterface::class . ' or Closure, `stdClass` given.'
         );
         $this->creator->afterCreateExecute($obj);

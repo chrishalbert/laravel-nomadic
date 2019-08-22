@@ -75,10 +75,10 @@ class NomadicMigrator extends Migrator
 
     /**
      * Resolve a migration instance from a file.
-     * @param string $file The file name.
+     * @param mixed $file The file name as a string - not type checked due to parent class.
      * @return object
      */
-    public function resolve(string $file)
+    public function resolve($file)
     {
         $class = Str::studly(implode('_', array_slice(explode('_', $file), 4)));
 

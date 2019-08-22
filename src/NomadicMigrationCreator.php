@@ -3,7 +3,6 @@
 namespace ChrisHalbert\LaravelNomadic;
 
 use ChrisHalbert\LaravelNomadic\Hooks\NomadicHookInterface;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\Migrations\MigrationCreator;
 
 /**
@@ -63,35 +62,35 @@ class NomadicMigrationCreator extends MigrationCreator
 
     /**
      * Register a pre migration create hook.
-     * @param \Closure $callback The callback to execute.
-     * @param array    $params   The parameters if applicable.
+     * @param \Closure|NomadicHookInterface $callback The callback to execute.
+     * @param array                         $params   The parameters if applicable.
      * @return void
      */
-    public function beforeCreateExecute(\Closure $callback, array $params = [])
+    public function beforeCreateExecute($callback, array $params = [])
     {
         $this->appendHook($this->preCreate, $callback, $params);
     }
 
     /**
      * Register a post migration create hook.
-     * @param \Closure $callback The callback to execute.
-     * @param mixed    $params   The parameters if applicable.
+     * @param \Closure|NomadicHookInterface $callback The callback to execute.
+     * @param mixed                         $params   The parameters if applicable.
      * @return void
      */
-    public function afterCreateExecute(\Closure $callback, $params = null)
+    public function afterCreateExecute($callback, $params = null)
     {
         $this->appendHook($this->postCreate, $callback, $params);
     }
 
     /**
      * Creates a migration after registering custom hooks and firing pre create hooks.
-     * @param string  $name   The name of the migration.
-     * @param string  $path   The path.
-     * @param string  $table  The name of the table.
-     * @param boolean $create Whether to use create stub.
+     * @param mixed $name   String - The name of the migration.
+     * @param mixed $path   String - The path.
+     * @param mixed $table  String - The name of the table.
+     * @param mixed $create Bool - Whether to use create stub.
      * @return string
      */
-    public function create(string $name, string $path, string $table = null, bool $create = false)
+    public function create($name, $path, $table = null, $create = false)
     {
         $params = [$name, $path, $table, $create, $this->getClassName($name), $this->getPath($name, $path)];
         $this->registerHooks($params);
@@ -146,7 +145,7 @@ class NomadicMigrationCreator extends MigrationCreator
             $type = get_class($callback);
         }
 
-        throw new InvalidArgumentException(
+        throw new \TypeError(
             sprintf(
                 self::INVALID_HOOK,
                 NomadicHookInterface::class,
