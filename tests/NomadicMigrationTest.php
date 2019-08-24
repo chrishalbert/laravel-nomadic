@@ -71,6 +71,16 @@ class NomadicMigrationTest extends \PHPUnit_Framework_TestCase
         $migration->up();
     }
 
+    public function testSubclassExecutesHooks()
+    {
+        $migration = new \NomadicMigrationSubclassWithPrintable($this->repo);
+
+        $this->expectOutputRegex('/' . \NomadicMigrationSubclassWithPrintable::class . ' started at/');
+        $this->expectOutputRegex('/' . \NomadicMigrationSubclassWithPrintable::class . ' finished at/');
+
+        $migration->up();
+    }
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Must be an instance of a `NomadicMigrationHookInterface` or `Closure`

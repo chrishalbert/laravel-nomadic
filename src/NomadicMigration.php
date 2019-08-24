@@ -244,7 +244,7 @@ abstract class NomadicMigration extends Migration
      */
     protected function initTraits()
     {
-        $traits = class_uses($this);
+        $traits = class_uses_recursive($this);
 
         foreach ($traits as $trait) {
             $initMethod = sprintf("init" . class_basename($trait));
