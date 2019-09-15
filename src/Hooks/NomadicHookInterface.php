@@ -14,7 +14,7 @@ interface NomadicHookInterface
      * @param string  $path      The path.
      * @param string  $table     The name of the table.
      * @param boolean $create    Whether to use create stub.
-     * @param string  $className The generated name of hte class.
+     * @param string  $className The generated name of the class.
      * @param string  $filePath  The full path to the file.
      * @return string
      */
