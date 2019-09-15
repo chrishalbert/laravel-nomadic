@@ -28,8 +28,8 @@ class NomadicMigrationCreator extends MigrationCreator
      * @const array
      */
     const STUB_VARIABLE_NAMES = [
-        'fileDocs', 'classDocs', 'traitDocs', 'additionalProps',
-        'migrationTemplate', 'rollbackTemplate', 'additionalMethods'
+        'fileDocs', 'classDocs', 'traitDocs', 'additionalProperties',
+        'migrateTemplate', 'rollbackTemplate', 'additionalMethods'
     ];
 
     /**
@@ -137,11 +137,6 @@ class NomadicMigrationCreator extends MigrationCreator
         return parent::create($name, $path, $table, $create);
     }
 
-    public function setStubVariables($variables)
-    {
-
-    }
-
     /**
      * Gets the class name.
      * @param string $name
@@ -226,7 +221,7 @@ class NomadicMigrationCreator extends MigrationCreator
             $replace = $this->stubVariables[$name] ?? PHP_EOL;
             $stub = str_replace("{{{$name}}}", $replace, $stub);
         }
-        
+
         return $stub;
     }
 

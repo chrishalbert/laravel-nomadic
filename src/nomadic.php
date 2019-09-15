@@ -49,8 +49,8 @@ FILEDOCS
 CLASSDOCS
             ,'traitDocs' => <<<TRAITDOCS
 TRAITDOCS
-            ,'additionalProps' => <<<ADDITIONALPROPS
-ADDITIONALPROPS
+            ,'additionalProperties' => <<<ADDITIONALPROPERTIES
+ADDITIONALPROPERTIES
             ,'migrateTemplate' => <<<MIGRATETEMPLATE
 MIGRATETEMPLATE
             ,'rollbackTemplate' => <<<ROLLBACKTEMPLATE

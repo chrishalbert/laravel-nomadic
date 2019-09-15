@@ -23,6 +23,12 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($path, $this->creator->stubPath());
     }
 
+    public function testSetStubPath()
+    {
+        $this->creator->setStubPath('/fake/path');
+        $this->assertEquals('/fake/path', $this->creator->getStubPath());
+    }
+
     public function testPopulateStub()
     {
         $stub = file_get_contents(__DIR__ . '/../src/stubs/blank.stub');
@@ -30,6 +36,17 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('use CapsuleManagerTrait, Macroable;', $stub);
         $this->assertContains('use ' . CapsuleManagerTrait::class . ';', $stub);
         $this->assertContains('use ' . Macroable::class . ';', $stub);
+    }
+
+    public function testPopulateStubWithVariables()
+    {
+        $stub = file_get_contents(__DIR__ . '/../src/stubs/blank.stub');
+        $stubVariables = self::getStubVariables();
+        $this->creator->setStubVariables($stubVariables);
+        $stub = $this->creator->populateStub('TestingTraits', $stub, '');
+        foreach ($stubVariables as $stubVariable) {
+            $this->assertContains($stubVariable, $stub);
+        }
     }
 
     public function testBeforeCreateExecuteThrowsTypeError()
@@ -95,5 +112,43 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         unset($this->creator);
+    }
+
+    protected static function getStubVariables()
+    {
+        return [
+            'fileDocs' => <<<FILEDOCS
+/**
+ * File documentation.
+ */            
+FILEDOCS
+            ,'classDocs' => <<<CLASSDOCS
+/**
+ * Class docs.
+ */            
+CLASSDOCS
+            ,'traitDocs' => <<<TRAITDOCS
+    /**
+     * Trait docs. 
+     */            
+TRAITDOCS
+            ,'additionalProperties' => <<<ADDITIONALPROPS
+    /**
+     * A property.
+     * @var string
+     */
+    protected \$property;
+ADDITIONALPROPS
+            ,'migrateTemplate' => <<<MIGRATETEMPLATE
+        // Migration notes
+MIGRATETEMPLATE
+            ,'rollbackTemplate' => <<<ROLLBACKTEMPLATE
+        // Rollback notes
+ROLLBACKTEMPLATE
+            ,'additionalMethods' => <<<ADDITIONALMETHODS
+    protected function foo() {}
+ADDITIONALMETHODS
+        ];
+
     }
 }

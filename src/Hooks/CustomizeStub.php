@@ -2,8 +2,6 @@
 
 namespace ChrisHalbert\LaravelNomadic\Hooks;
 
-use ChrisHalbert\LaravelNomadic\NomadicMigration;
-
 /**
  * Class Customize
  * @package ChrisHalbert\LaravelNomadic\Hooks
@@ -18,7 +16,7 @@ class CustomizeStub implements NomadicCreateHookInterface
      * @param boolean $create    Whether to use create stub.
      * @param string  $className The generated name of the class.
      * @param string  $filePath  The full path to the file.
-     * @return string
+     * @return void
      */
     public function execute(
         string $name = '',
@@ -33,8 +31,9 @@ class CustomizeStub implements NomadicCreateHookInterface
         $customStubPath = config('nomadic.stub.path') ?? '';
         if ($customStubPath) {
             app('migration.creator')->setStubPath($customStubPath);
-            return;
         }
+
+        return;
 
         $stubVaribles = config('nomadic.stub.variables');
         if (is_array($stubVaribles) && !empty($stubVaribles)) {
