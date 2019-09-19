@@ -31,13 +31,12 @@ class CustomizeStub implements NomadicCreateHookInterface
         $customStubPath = config('nomadic.stub.path') ?? '';
         if ($customStubPath) {
             app('migration.creator')->setStubPath($customStubPath);
+            return;
         }
 
-        return;
-
-        $stubVaribles = config('nomadic.stub.variables');
-        if (is_array($stubVaribles) && !empty($stubVaribles)) {
-            app('migration.creator')->setStubVariables($stubVaribles);
+        $stubVariables = config('nomadic.stub.variables');
+        if (is_array($stubVariables) && !empty($stubVariables)) {
+            app('migration.creator')->setStubVariables($stubVariables);
         }
     }
 }
