@@ -58,9 +58,8 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         \AppMock::set('migration.creator', $this->creator);
 
         $migrationName = 'CreateMigrationFromWithStubPath';
-        $path = $this->creator->create($migrationName, '');
+        $path = $this->creator->create($migrationName, '/tmp/');
         $customizedMigration = file_get_contents($path);
-        echo
         $this->assertEquals('Fake Custom Stub', $customizedMigration);
     }
 
@@ -71,7 +70,7 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         \AppMock::set('migration.creator', $this->creator);
 
         $migrationName = 'CreateMigrationFromWithCustomizedStub';
-        $path = $this->creator->create($migrationName, '');
+        $path = $this->creator->create($migrationName, '/tmp/');
         $customizedMigration = file_get_contents($path);
         $stubVariables = self::getStubVariables();
         foreach ($stubVariables as $stubVariable) {
