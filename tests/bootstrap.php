@@ -10,7 +10,7 @@ class TestHookConfig implements NomadicHookInterface
         string $name = '',
         string $path = '',
         string $table = null,
-        bool $create = false,
+        $create = false,
         string $className = '',
         string $filePath = ''
     ) {}
