@@ -2,6 +2,7 @@
 
 namespace ChrisHalbert\LaravelNomadic;
 
+use ChrisHalbert\LaravelNomadic\Hooks\CustomizeStub;
 use ChrisHalbert\LaravelNomadic\Hooks\NomadicHookInterface;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Traits\CapsuleManagerTrait;
@@ -23,6 +24,12 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($path, $this->creator->stubPath());
     }
 
+    public function testSetStubPath()
+    {
+        $this->creator->setStubPath('/fake/path');
+        $this->assertEquals('/fake/path', $this->creator->getStubPath());
+    }
+
     public function testPopulateStub()
     {
         $stub = file_get_contents(__DIR__ . '/../src/stubs/blank.stub');
@@ -30,6 +37,45 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('use CapsuleManagerTrait, Macroable;', $stub);
         $this->assertContains('use ' . CapsuleManagerTrait::class . ';', $stub);
         $this->assertContains('use ' . Macroable::class . ';', $stub);
+    }
+
+    public function testPopulateStubWithVariables()
+    {
+        $stub = file_get_contents(__DIR__ . '/../src/stubs/blank.stub');
+        $stubVariables = self::getStubVariables();
+        $this->creator->setStubVariables($stubVariables);
+        $stub = $this->creator->populateStub('TestingTraits', $stub, '');
+        foreach ($stubVariables as $stubVariable) {
+            $this->assertContains($stubVariable, $stub);
+        }
+    }
+
+    public function testCustomizeStubHookWithPath()
+    {
+        // Add mocks for config and app functions
+        \ConfigMock::set('nomadic.hooks.preCreate', [new CustomizeStub()]);
+        \ConfigMock::set('nomadic.stub.path', __DIR__ . '/files');
+        \AppMock::set('migration.creator', $this->creator);
+
+        $migrationName = 'CreateMigrationFromWithStubPath';
+        $path = $this->creator->create($migrationName, '/tmp/');
+        $customizedMigration = file_get_contents($path);
+        $this->assertEquals('Fake Custom Stub', $customizedMigration);
+    }
+
+    public function testCustomizeStubHookWithVariables()
+    {
+        // Add mocks for config and app functions
+        \ConfigMock::set('nomadic.hooks.preCreate', [new CustomizeStub()]);
+        \AppMock::set('migration.creator', $this->creator);
+
+        $migrationName = 'CreateMigrationFromWithCustomizedStub';
+        $path = $this->creator->create($migrationName, '/tmp/');
+        $customizedMigration = file_get_contents($path);
+        $stubVariables = self::getStubVariables();
+        foreach ($stubVariables as $stubVariable) {
+            $this->assertContains($stubVariable, $customizedMigration);
+        }
     }
 
     public function testBeforeCreateExecuteThrowsTypeError()
@@ -94,6 +140,45 @@ class NomadicMigrationCreatorTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        \ConfigMock::reset();
         unset($this->creator);
+    }
+
+    protected static function getStubVariables()
+    {
+        return [
+            'fileDocs' => <<<FILEDOCS
+/**
+ * File documentation.
+ */            
+FILEDOCS
+            ,'classDocs' => <<<CLASSDOCS
+/**
+ * Class docs.
+ */            
+CLASSDOCS
+            ,'traitDocs' => <<<TRAITDOCS
+    /**
+     * Trait docs. 
+     */            
+TRAITDOCS
+            ,'additionalProperties' => <<<ADDITIONALPROPS
+    /**
+     * A property.
+     * @var string
+     */
+    protected \$property;
+ADDITIONALPROPS
+            ,'migrateTemplate' => <<<MIGRATETEMPLATE
+        // Migration notes
+MIGRATETEMPLATE
+            ,'rollbackTemplate' => <<<ROLLBACKTEMPLATE
+        // Rollback notes
+ROLLBACKTEMPLATE
+            ,'additionalMethods' => <<<ADDITIONALMETHODS
+    protected function foo() {}
+ADDITIONALMETHODS
+        ];
+
     }
 }

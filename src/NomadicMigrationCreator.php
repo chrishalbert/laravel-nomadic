@@ -24,6 +24,15 @@ class NomadicMigrationCreator extends MigrationCreator
     const INVALID_HOOK = "Hook must be an instance of a %s or %s, `%s` given.";
 
     /**
+     * Variables that can be used for the stubs.
+     * @const array
+     */
+    const STUB_VARIABLE_NAMES = [
+        'fileDocs', 'classDocs', 'traitDocs', 'additionalProperties',
+        'migrateTemplate', 'rollbackTemplate', 'additionalMethods'
+    ];
+
+    /**
      * Name of the class being created.
      * @var string|null
      */
@@ -43,12 +52,34 @@ class NomadicMigrationCreator extends MigrationCreator
     protected $preCreate = [];
 
     /**
+     * The stub path.
+     *
+     * @var string
+     */
+    protected $stubPath = __DIR__ . '/stubs';
+
+    /**
+     * Stub variables.
+     * @var string
+     */
+    protected $stubVariables = [];
+
+    /**
      * Get the path to the stubs.
      * @return string
      */
     public function getStubPath()
     {
-        return __DIR__ . '/stubs';
+        return $this->stubPath;
+    }
+
+    /**
+     * Sets the path to the stub.
+     * @param string $stubPath The custom stub path.
+     */
+    public function setStubPath(string $stubPath)
+    {
+        $this->stubPath = $stubPath;
     }
 
     /**
@@ -58,6 +89,14 @@ class NomadicMigrationCreator extends MigrationCreator
     public function stubPath()
     {
         return $this->getStubPath();
+    }
+
+    /**
+     * @param array $stubVariables The
+     */
+    public function setStubVariables(array $stubVariables)
+    {
+        $this->stubVariables = $stubVariables;
     }
 
     /**
@@ -176,6 +215,11 @@ class NomadicMigrationCreator extends MigrationCreator
 
         if (!empty($traits) && is_array($traits)) {
             $stub = $this->appendTraits($stub, $traits);
+        }
+
+        foreach (self::STUB_VARIABLE_NAMES as $name) {
+            $replace = $this->stubVariables[$name] ?? PHP_EOL;
+            $stub = str_replace("{{{$name}}}", $replace, $stub);
         }
 
         return $stub;

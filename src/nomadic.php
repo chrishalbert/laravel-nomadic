@@ -39,4 +39,24 @@ return [
             // Runs before the parent destructor
         ]
     ],
+
+    'stub' => [
+        'path' => '', // You can define your own stub
+        'variables' => [ // or safely
+            'fileDocs' => <<<FILEDOCS
+FILEDOCS
+            ,'classDocs' => <<<CLASSDOCS
+CLASSDOCS
+            ,'traitDocs' => <<<TRAITDOCS
+TRAITDOCS
+            ,'additionalProperties' => <<<ADDITIONALPROPERTIES
+ADDITIONALPROPERTIES
+            ,'migrateTemplate' => <<<MIGRATETEMPLATE
+MIGRATETEMPLATE
+            ,'rollbackTemplate' => <<<ROLLBACKTEMPLATE
+ROLLBACKTEMPLATE
+            ,'additionalMethods' => <<<ADDITIONALMETHODS
+ADDITIONALMETHODS
+        ]
+    ]
 ];
