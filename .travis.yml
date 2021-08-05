@@ -3,7 +3,7 @@ language: php
 php:
   - 7.3
 
-before_script: composer install
+before_script: XDEBUG_MODE=off composer install
 
 script: ./vendor/bin/phing
 
