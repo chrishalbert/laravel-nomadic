@@ -2,10 +2,8 @@
 namespace ChrisHalbert\LaravelNomadic;
 
 use Illuminate\Database\Migrations\Migrator;
-use ChrisHalbert\LaravelNomadic\NomadicRepositoryInterface;
-use ChrisHalbert\LaravelNomadic\NomadicMigration;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Database\ConnectionResolverInterface as Resolver;
+use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Support\Str;
 
 /**
@@ -29,7 +27,7 @@ class NomadicMigrator extends Migrator
      */
     public function __construct(
         NomadicRepositoryInterface $repository,
-        Resolver $resolver,
+        ConnectionResolverInterface $resolver,
         Filesystem $files
     ) {
         $this->files = $files;
@@ -77,7 +75,7 @@ class NomadicMigrator extends Migrator
 
     /**
      * Resolve a migration instance from a file.
-     * @param string $file The file name.
+     * @param mixed $file The file name as a string - not type checked due to parent class.
      * @return object
      */
     public function resolve($file)

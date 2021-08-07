@@ -76,7 +76,7 @@ abstract class NomadicMigration extends Migration
      * Run the migrations.
      *
      * @return void
-     * @throws \Exception
+     * @throws \Exception Throws an exception.
      */
     public function up()
     {
@@ -89,7 +89,7 @@ abstract class NomadicMigration extends Migration
      * Reverse the migrations.
      *
      * @return void
-     * @throws \Exception
+     * @throws \Exception Throws an exception.
      */
     public function down()
     {
@@ -133,7 +133,7 @@ abstract class NomadicMigration extends Migration
      * @param mixed  $value The value to be inserted.
      * @return void
      */
-    public function setProperty($key, $value)
+    public function setProperty(string $key, $value)
     {
         $this->properties[$key] = $value;
     }
@@ -144,7 +144,7 @@ abstract class NomadicMigration extends Migration
      * @param bool   $persist By default, we get the property from the db.
      * @return mixed
      */
-    public function getProperty($key, $persist = true)
+    public function getProperty(string $key, bool $persist = true)
     {
         if ($persist) {
             $this->syncWithDb();
@@ -158,7 +158,7 @@ abstract class NomadicMigration extends Migration
      * @param bool $persist Whether to sync with the db first.
      * @return mixed
      */
-    public function getProperties($persist = false)
+    public function getProperties(bool $persist = false)
     {
         if ($persist) {
             $this->syncWithDb();
@@ -174,7 +174,7 @@ abstract class NomadicMigration extends Migration
      * @return void
      * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
      */
-    public function addHook($name, $hook)
+    public function addHook(string $name, $hook)
     {
         if (!($hook instanceof NomadicMigrationHookInterface || $hook instanceof \Closure)) {
             throw new \Exception(self::HOOK_TYPE_EXCEPTION);
@@ -191,7 +191,7 @@ abstract class NomadicMigration extends Migration
      * @return array
      * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
      */
-    public function getHooks($name)
+    public function getHooks(string $name)
     {
         $this->verifyValidHook($name);
 
@@ -204,7 +204,7 @@ abstract class NomadicMigration extends Migration
      * @return void
      * @throws \Exception If the hook is not an instance of a NomadicMigrationHookInterface.
      */
-    public function clearHooks($name)
+    public function clearHooks(string $name)
     {
         $this->verifyValidHook($name);
         $this->migrationHooks[$name] = [];
@@ -244,7 +244,7 @@ abstract class NomadicMigration extends Migration
      */
     protected function initTraits()
     {
-        $traits = class_uses($this);
+        $traits = class_uses_recursive($this);
 
         foreach ($traits as $trait) {
             $initMethod = sprintf("init" . class_basename($trait));

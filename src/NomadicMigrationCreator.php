@@ -3,7 +3,6 @@
 namespace ChrisHalbert\LaravelNomadic;
 
 use ChrisHalbert\LaravelNomadic\Hooks\NomadicHookInterface;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\Migrations\MigrationCreator;
 
 /**
@@ -25,6 +24,15 @@ class NomadicMigrationCreator extends MigrationCreator
     const INVALID_HOOK = "Hook must be an instance of a %s or %s, `%s` given.";
 
     /**
+     * Variables that can be used for the stubs.
+     * @const array
+     */
+    const STUB_VARIABLE_NAMES = [
+        'fileDocs', 'classDocs', 'traitDocs', 'additionalProperties',
+        'migrateTemplate', 'rollbackTemplate', 'additionalMethods'
+    ];
+
+    /**
      * Name of the class being created.
      * @var string|null
      */
@@ -44,12 +52,34 @@ class NomadicMigrationCreator extends MigrationCreator
     protected $preCreate = [];
 
     /**
+     * The stub path.
+     *
+     * @var string
+     */
+    protected $stubPath = __DIR__ . '/stubs';
+
+    /**
+     * Stub variables.
+     * @var string
+     */
+    protected $stubVariables = [];
+
+    /**
      * Get the path to the stubs.
      * @return string
      */
     public function getStubPath()
     {
-        return __DIR__ . '/stubs';
+        return $this->stubPath;
+    }
+
+    /**
+     * Sets the path to the stub.
+     * @param string $stubPath The custom stub path.
+     */
+    public function setStubPath(string $stubPath)
+    {
+        $this->stubPath = $stubPath;
     }
 
     /**
@@ -62,9 +92,17 @@ class NomadicMigrationCreator extends MigrationCreator
     }
 
     /**
+     * @param array $stubVariables The
+     */
+    public function setStubVariables(array $stubVariables)
+    {
+        $this->stubVariables = $stubVariables;
+    }
+
+    /**
      * Register a pre migration create hook.
-     * @param \Closure $callback The callback to execute.
-     * @param array    $params   The parameters if applicable.
+     * @param \Closure|NomadicHookInterface $callback The callback to execute.
+     * @param array                         $params   The parameters if applicable.
      * @return void
      */
     public function beforeCreateExecute($callback, array $params = [])
@@ -74,8 +112,8 @@ class NomadicMigrationCreator extends MigrationCreator
 
     /**
      * Register a post migration create hook.
-     * @param \Closure $callback The callback to execute.
-     * @param mixed    $params   The parameters if applicable.
+     * @param \Closure|NomadicHookInterface $callback The callback to execute.
+     * @param mixed                         $params   The parameters if applicable.
      * @return void
      */
     public function afterCreateExecute($callback, $params = null)
@@ -85,10 +123,10 @@ class NomadicMigrationCreator extends MigrationCreator
 
     /**
      * Creates a migration after registering custom hooks and firing pre create hooks.
-     * @param string  $name   The name of the migration.
-     * @param string  $path   The path.
-     * @param string  $table  The name of the table.
-     * @param boolean $create Whether to use create stub.
+     * @param mixed $name   String - The name of the migration.
+     * @param mixed $path   String - The path.
+     * @param mixed $table  String - The name of the table.
+     * @param mixed $create Bool - Whether to use create stub.
      * @return string
      */
     public function create($name, $path, $table = null, $create = false)
@@ -146,7 +184,7 @@ class NomadicMigrationCreator extends MigrationCreator
             $type = get_class($callback);
         }
 
-        throw new InvalidArgumentException(
+        throw new \TypeError(
             sprintf(
                 self::INVALID_HOOK,
                 NomadicHookInterface::class,
@@ -177,6 +215,11 @@ class NomadicMigrationCreator extends MigrationCreator
 
         if (!empty($traits) && is_array($traits)) {
             $stub = $this->appendTraits($stub, $traits);
+        }
+
+        foreach (self::STUB_VARIABLE_NAMES as $name) {
+            $replace = $this->stubVariables[$name] ?? PHP_EOL;
+            $stub = str_replace("{{{$name}}}", $replace, $stub);
         }
 
         return $stub;

@@ -1,11 +1,13 @@
 <?php
-
+{{fileDocs}}
 use ChrisHalbert\LaravelNomadic\NomadicMigration;
-
+{{classDocs}}
 class DummyClass extends NomadicMigration
 {
-    // Traits can be added within configs/nomadic.php
+{{traitDocs}}
     // DummyTraits
+
+{{additionalProperties}}
 
     /**
      * Run the migrations.
@@ -14,8 +16,7 @@ class DummyClass extends NomadicMigration
      */
     public function migrate()
     {
-        // Use $this->setProperty($migrationColumn, $insertedIds);
-        // The $migrationColumn MUST be added to the configs/nomadic.php
+{{migrateTemplate}}
     }
 
     /**
@@ -25,6 +26,8 @@ class DummyClass extends NomadicMigration
      */
     public function rollback()
     {
-        // And now you can $insertedIds = $this->getProperty($migrationColumn) and delete
+{{rollbackTemplate}}
     }
+
+{{additionalMethods}}
 }
