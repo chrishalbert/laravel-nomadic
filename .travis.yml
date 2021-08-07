@@ -1,9 +1,14 @@
 language: php
 
+env:
+  global:
+    - XDEBUG_MODE=coverage
+
 php:
   - 7.3
 
-before_script: XDEBUG_MODE=off composer install -v
+before_script: 
+  - composer install
 
 script: ./vendor/bin/phing
 
