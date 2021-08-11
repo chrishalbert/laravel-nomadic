@@ -11,7 +11,7 @@ A powerful configuration based toolkit of enhancements to Laravel's migrations. 
 ## Features
 * [**Hooks**](docs/NomadicHooks.md) - Use pre/post hooks for migration commands: `make:migration`, `migrate`, and `migrate:rollback`
 ![Up Down Hook Ideas](./docs/LaravelNomadic-upDownHooks.png)
-* [**Stubs**](docs/NomadicStubs.md) - Add developer notes to the generated migration
+* **Stubs** - Add developer notes to the generated migration
 ![Stub Migrations](./docs/LaravelNomadic-Stub.PNG)
 * [**Schema**](docs/NomadicSchema.md) - Associate extra data within your `migrations` table
 
