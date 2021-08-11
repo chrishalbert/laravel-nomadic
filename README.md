@@ -42,5 +42,5 @@ A powerful configuration based toolkit of enhancements to Laravel's migrations. 
    
 ## Services
 _Do you have an internal need or enhancement you care not to share with the world?_
-####I can help! 
+#### I can help! 
 Reach out to me directly for rates, scope and your business needs. I can furnish an NDA as needed. 
