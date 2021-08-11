@@ -1,3 +1,4 @@
+![Laravel Nomadic Header](./docs/NomadLife.png)
 # laravel-nomadic
 [![Build Status](https://travis-ci.org/chrishalbert/laravel-nomadic.svg?branch=master)](https://travis-ci.org/chrishalbert/laravel-nomadic)
 [![Coverage Status](https://coveralls.io/repos/github/chrishalbert/laravel-nomadic/badge.svg?branch=master)](https://coveralls.io/github/chrishalbert/laravel-nomadic?branch=master)
